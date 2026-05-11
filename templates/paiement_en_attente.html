@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Paiements en attente | Gestion Dettes Premium</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #1e293b;
+        }
+        .header-page {
+            background-color: #0f172a;
+            border-bottom: 1px solid rgba(34, 211, 238, 0.15);
+        }
+        .payment-card {
+            background-color: #0f172a;
+            border-radius: 24px;
+            border: 1px solid rgba(34, 211, 238, 0.1);
+            transition: all 0.2s ease;
+        }
+        .payment-card:active {
+            transform: scale(0.98);
+        }
+        .method-badge {
+            background-color: rgba(34, 211, 238, 0.1);
+            border-radius: 30px;
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 500;
+            color: #22d3ee;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            width: fit-content;
+        }
+        .btn-confirm {
+            background-color: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 30px;
+            padding: 8px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #4ade80;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-confirm:active {
+            transform: scale(0.95);
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        .btn-refuse {
+            background-color: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 30px;
+            padding: 8px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #f87171;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-refuse:active {
+            transform: scale(0.95);
+            background-color: rgba(239, 68, 68, 0.25);
+        }
+        .btn-back {
+            background-color: transparent;
+            border: 1px solid #334155;
+            border-radius: 40px;
+            padding: 10px 20px;
+            color: #94a3b8;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-back:active {
+            transform: scale(0.97);
+            background-color: rgba(34, 211, 238, 0.1);
+            border-color: #22d3ee;
+            color: #22d3ee;
+        }
+        .badge-count {
+            background-color: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border-radius: 30px;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .amount-warning {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fbbf24;
+        }
+        .empty-state {
+            background-color: #0f172a;
+            border-radius: 32px;
+            border: 1px dashed #334155;
+            padding: 48px 20px;
+            text-align: center;
+        }
+        .total-pending {
+            background-color: #0f172a;
+            border-radius: 28px;
+            padding: 14px 20px;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-dark" style="background-color: #1e293b !important;">
+
+    <!-- Conteneur principal mobile-first -->
+    <div class="container-fluid px-0" style="max-width: 500px; margin: 0 auto; background-color: #1e293b; min-height: 100vh;">
+        
+        <!-- Header -->
+        <div class="header-page px-4 py-4">
+            <div class="d-flex align-items-center justify-content-between">
+                <a href="{{ url_for('index') }}" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Retour
+                </a>
+                <div class="badge-count">
+                    <i class="fas fa-hourglass-half me-1"></i> {{ demandes|length }} en attente
+                </div>
+            </div>
+        </div>
+
+        <div class="px-4 py-3">
+            
+            <!-- Titre de la page -->
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <div class="rounded-circle p-3" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%);">
+                    <i class="fas fa-clock text-warning fs-3"></i>
+                </div>
+                <div>
+                    <h1 class="text-white fw-bold mb-0" style="font-size: 24px;">Paiements en attente</h1>
+                    <p class="text-secondary small mb-0">Demandes à traiter</p>
+                </div>
+            </div>
+
+            <!-- Vérification si la liste est vide -->
+            {% if demandes|length == 0 %}
+            <div class="empty-state">
+                <i class="fas fa-check-circle text-success fs-1 mb-3 d-block"></i>
+                <h5 class="text-secondary mb-2">Aucune demande en attente</h5>
+                <p class="text-secondary small">Toutes les demandes ont été traitées</p>
+                <a href="{{ url_for('index') }}" class="btn-back mt-3">
+                    <i class="fas fa-home"></i> Retour à l'accueil
+                </a>
+            </div>
+            {% else %}
+            
+            <!-- Total des paiements en attente -->
+            <div class="total-pending mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <small class="text-secondary">Total à encaisser</small>
+                        <div class="amount-warning">
+                            {% set total = demandes|sum(attribute='montant') %}
+                            {{ total }} Ouguiya
+                        </div>
+                    </div>
+                    <div class="bg-warning bg-opacity-10 rounded-circle p-2">
+                        <i class="fas fa-money-bill-wave text-warning fs-4"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Liste des demandes en attente (cards) -->
+            <div class="d-flex flex-column gap-3">
+                {% for demande in demandes %}
+                <div class="payment-card p-3">
+                    <!-- En-tête : client et méthode -->
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-user-circle text-warning fs-5"></i>
+                            <h5 class="text-white fw-semibold mb-0">{{ demande.nom }}</h5>
+                        </div>
+                        <span class="method-badge">
+                            <i class="fas fa-university"></i> {{ demande.method }}
+                        </span>
+                    </div>
+
+                    <!-- Description / Achat -->
+                    <div class="mb-2">
+                        <p class="text-secondary small mb-1">
+                            <i class="fas fa-shopping-basket me-1"></i> {{ demande.achat }}
+                        </p>
+                    </div>
+
+                    <!-- Montant -->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-secondary">Montant</small>
+                                <div class="amount-warning">{{ demande.montant }} Ouguiya</div>
+                            </div>
+                            <div class="text-end">
+                                <small class="text-secondary">Date de la demande</small>
+                                <div class="text-white small">
+                                    <i class="fas fa-calendar-alt me-1"></i> {{ demande.date_demande }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions : Confirmer et Refuser -->
+                    <div class="d-flex gap-2 mt-2">
+                        <a href="/confirmer/{{ demande.id_demande }}" class="btn-confirm flex-grow-1 justify-content-center">
+                            <i class="fas fa-check-circle"></i> Confirmer
+                        </a>
+                        <a href="/refuse/{{ demande.id_demande }}" class="btn-refuse flex-grow-1 justify-content-center">
+                            <i class="fas fa-times-circle"></i> Refuser
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            {% endif %}
+
+            <!-- Message informatif -->
+            <div class="text-center mt-4 pt-3">
+                <small class="text-secondary">
+                    <i class="fas fa-shield-alt me-1 text-warning"></i> 
+                    Les paiements confirmés sont automatiquement validés
+                </small>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-secondary small py-4 mt-3 border-top border-secondary" style="border-color: rgba(51, 65, 85, 0.5) !important;">
+            <i class="fas fa-lock me-1"></i> Paiements sécurisés 
+            <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i> 
+            AppDette
+            <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i> 
+            
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

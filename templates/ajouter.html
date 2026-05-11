@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Ajouter un client | Gestion Dettes Premium</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #1e293b;
+        }
+        .form-card {
+            background-color: #0f172a;
+            border-radius: 32px;
+            border: 1px solid rgba(34, 211, 238, 0.15);
+        }
+        .form-label-custom {
+            color: #94a3b8;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            margin-left: 4px;
+        }
+        .form-control-custom {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 28px;
+            padding: 14px 18px;
+            color: white;
+            font-size: 16px;
+            width: 100%;
+            transition: all 0.2s;
+        }
+        .form-control-custom:focus {
+            outline: none;
+            border-color: #22d3ee;
+            box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.2);
+            background-color: #1e293b;
+        }
+        .form-control-custom::placeholder {
+            color: #64748b;
+        }
+        .btn-submit {
+            background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+            border: none;
+            border-radius: 40px;
+            padding: 14px 20px;
+            font-weight: 600;
+            font-size: 16px;
+            color: #0f172a;
+            transition: all 0.2s;
+            width: 100%;
+        }
+        .btn-submit:active {
+            transform: scale(0.97);
+        }
+        .btn-back {
+            background-color: transparent;
+            border: 1px solid #334155;
+            border-radius: 40px;
+            padding: 10px 20px;
+            color: #94a3b8;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-back:active {
+            transform: scale(0.97);
+            background-color: rgba(34, 211, 238, 0.1);
+            border-color: #22d3ee;
+            color: #22d3ee;
+        }
+        .icon-circle {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(34, 211, 238, 0.05) 100%);
+            border-radius: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+        }
+        .info-message {
+            background-color: rgba(34, 211, 238, 0.08);
+            border-radius: 20px;
+            padding: 12px 16px;
+            font-size: 12px;
+            color: #94a3b8;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="bg-dark" style="background-color: #1e293b !important;">
+
+    <!-- Conteneur principal mobile-first -->
+    <div class="container-fluid px-0" style="max-width: 500px; margin: 0 auto; background-color: #1e293b; min-height: 100vh;">
+        
+        <div class="px-4 py-4">
+            
+            <!-- Bouton retour -->
+            <div class="mb-3">
+                <a href="{{ url_for('index') }}" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Retour
+                </a>
+            </div>
+
+            <!-- Carte formulaire -->
+            <div class="form-card p-4 shadow-lg mt-2">
+                
+                <!-- Icône et titre -->
+                <div class="icon-circle mx-auto">
+                    <i class="fas fa-user-plus text-info fs-1"></i>
+                </div>
+                <h2 class="text-white fw-bold text-center mb-1" style="font-size: 24px;">Nouveau Client</h2>
+                <p class="text-secondary text-center small mb-4">Enregistrer un client du magasin</p>
+
+                <!-- Formulaire -->
+                <form method="post">
+                    <!-- Champ Nom -->
+                    <div class="mb-4">
+                        <label class="form-label-custom">
+                            <i class="fas fa-user me-1 text-info"></i> Nom complet
+                        </label>
+                        <input type="text" name="nom" class="form-control-custom" 
+                               placeholder="Ex: jamal musiala" required>
+                    </div>
+
+                    <!-- Champ Téléphone -->
+                    <div class="mb-4">
+                        <label class="form-label-custom">
+                            <i class="fas fa-phone-alt me-1 text-info"></i> Téléphone
+                        </label>
+                        <input type="tel" name="tel" class="form-control-custom" 
+                               placeholder="Ex: 26 00 00 00">
+                        <small class="text-secondary mt-2 d-block ms-2" style="font-size: 11px;">
+                            <i class="fas fa-info-circle"></i> Optionnel, mais recommandé
+                        </small>
+                    </div>
+
+                    <!-- Bouton ajouter -->
+                    <button type="submit" class="btn-submit mt-2">
+                        <i class="fas fa-save me-2"></i> Ajouter le client
+                    </button>
+                </form>
+
+                <!-- Message informatif -->
+                <div class="info-message mt-4">
+                    <i class="fas fa-store me-1 text-info"></i>
+                    Ce client pourra ensuite avoir des dettes enregistrées
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="text-center text-secondary small py-4 mt-4">
+                <i class="fas fa-lock me-1"></i> Paiements sécurisés 
+                <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i> 
+                AppDette
+                <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i> 
+                
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

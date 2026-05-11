@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Archive | Gestion Dettes Premium</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #1e293b;
+        }
+        .header-page {
+            background-color: #0f172a;
+            border-bottom: 1px solid rgba(34, 211, 238, 0.15);
+        }
+        .archive-card {
+            background-color: #0f172a;
+            border-radius: 24px;
+            border: 1px solid rgba(34, 211, 238, 0.1);
+            transition: all 0.2s ease;
+        }
+        .archive-card:active {
+            transform: scale(0.98);
+        }
+        .status-badge-archived {
+            background-color: rgba(34, 197, 94, 0.15);
+            border-radius: 30px;
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #4ade80;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            width: fit-content;
+        }
+        .amount-archived {
+            font-size: 18px;
+            font-weight: 700;
+            color: #4ade80;
+        }
+        .btn-back {
+            background-color: transparent;
+            border: 1px solid #334155;
+            border-radius: 40px;
+            padding: 10px 20px;
+            color: #94a3b8;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-back:active {
+            transform: scale(0.97);
+            background-color: rgba(34, 211, 238, 0.1);
+            border-color: #22d3ee;
+            color: #22d3ee;
+        }
+        .badge-count {
+            background-color: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+            border-radius: 30px;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .empty-state {
+            background-color: #0f172a;
+            border-radius: 32px;
+            border: 1px dashed #334155;
+            padding: 48px 20px;
+            text-align: center;
+        }
+        .total-archived {
+            background-color: #0f172a;
+            border-radius: 28px;
+            padding: 14px 20px;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+        .archived-icon-bg {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0.05) 100%);
+        }
+        .date-badge {
+            background-color: #1e293b;
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 11px;
+            color: #94a3b8;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+    </style>
+</head>
+<body class="bg-dark" style="background-color: #1e293b !important;">
+
+    <!-- Conteneur principal mobile-first -->
+    <div class="container-fluid px-0" style="max-width: 500px; margin: 0 auto; background-color: #1e293b; min-height: 100vh;">
+        
+        <!-- Header -->
+        <div class="header-page px-4 py-4">
+            <div class="d-flex align-items-center justify-content-between">
+                <a href="{{ url_for('index') }}" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Retour
+                </a>
+                <div class="badge-count">
+                    <i class="fas fa-archive me-1"></i> {{ archives|length }} archive(s)
+                </div>
+            </div>
+        </div>
+
+        <div class="px-4 py-3">
+            
+            <!-- Titre de la page -->
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <div class="rounded-circle p-3 archived-icon-bg">
+                    <i class="fas fa-archive text-success fs-3"></i>
+                </div>
+                <div>
+                    <h1 class="text-white fw-bold mb-0" style="font-size: 24px;">Archive</h1>
+                    <p class="text-secondary small mb-0">Dettes soldées et payées</p>
+                </div>
+            </div>
+
+            <!-- Vérification si la liste est vide -->
+            {% if archives|length == 0 %}
+            <div class="empty-state">
+                <i class="fas fa-inbox text-secondary fs-1 mb-3 d-block"></i>
+                <h5 class="text-secondary mb-2">Aucune archive</h5>
+                <p class="text-secondary small">Les dettes payées apparaîtront ici</p>
+                <a href="{{ url_for('index') }}" class="btn-back mt-3">
+                    <i class="fas fa-home"></i> Retour à l'accueil
+                </a>
+            </div>
+            {% else %}
+            
+            <!-- Total des montants archivés -->
+            <div class="total-archived mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <small class="text-secondary">Total récupéré</small>
+                        <div class="amount-archived">
+                            {% set total = archives|sum(attribute='montant_tot') %}
+                            {{ total }} Ouguiya
+                        </div>
+                    </div>
+                    <div class="bg-success bg-opacity-10 rounded-circle p-2">
+                        <i class="fas fa-check-circle text-success fs-4"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Liste des archives (cards) -->
+            <div class="d-flex flex-column gap-3">
+                {% for archive in archives %}
+                <div class="archive-card p-3">
+                    <!-- En-tête : client et statut -->
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-user-circle text-success fs-5"></i>
+                            <h5 class="text-white fw-semibold mb-0">{{ archive.nom }}</h5>
+                        </div>
+                        <span class="status-badge-archived">
+                            <i class="fas fa-check-circle"></i> Payé
+                        </span>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <p class="text-secondary small mb-1">
+                            <i class="fas fa-pen me-1"></i> {{ archive.description }}
+                        </p>
+                    </div>
+
+                    <!-- Montant -->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-secondary">Montant payé</small>
+                                <div class="amount-archived">{{ archive.montant_tot }} Ouguiya</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dates -->
+                    <div class="d-flex justify-content-between align-items-center mt-2 pt-1">
+                        <div class="date-badge">
+                            <i class="fas fa-calendar-plus text-info"></i>
+                            <span>{{ archive.date_dette }}</span>
+                        </div>
+                        <div class="date-badge">
+                            <i class="fas fa-calendar-check text-success"></i>
+                            <span>{{ archive.date_reg }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Ligne de séparation subtile -->
+                    <div class="border-top border-secondary mt-3 pt-2" style="border-color: rgba(51, 65, 85, 0.3) !important;">
+                        <small class="text-success">
+                            <i class="fas fa-check-circle me-1"></i> Transaction finalisée
+                        </small>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            {% endif %}
+
+            <!-- Message informatif -->
+            <div class="text-center mt-4 pt-3">
+                <small class="text-secondary">
+                    <i class="fas fa-chart-line me-1 text-success"></i> 
+                    Archive des dettes entièrement remboursées
+                </small>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-secondary small py-4 mt-3 border-top border-secondary" style="border-color: rgba(51, 65, 85, 0.5) !important;">
+            <i class="fas fa-lock me-1"></i> Paiements sécurisés 
+            <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i> 
+            AppDette 
+            <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i> 
+            
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

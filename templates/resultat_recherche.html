@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Recherche | Gestion Dettes Premium</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #1e293b;
+        }
+        .header-page {
+            background-color: #0f172a;
+            border-bottom: 1px solid rgba(34, 211, 238, 0.15);
+        }
+        .search-card {
+            background-color: #0f172a;
+            border-radius: 32px;
+            border: 1px solid rgba(34, 211, 238, 0.15);
+        }
+        .result-card {
+            background-color: #0f172a;
+            border-radius: 24px;
+            border: 1px solid rgba(34, 211, 238, 0.1);
+            transition: all 0.2s ease;
+        }
+        .result-card:active {
+            transform: scale(0.98);
+        }
+        .search-input-group {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 60px;
+            padding: 4px;
+            transition: all 0.2s;
+        }
+        .search-input-group:focus-within {
+            border-color: #22d3ee;
+            box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.2);
+        }
+        .search-input {
+            background-color: transparent;
+            border: none;
+            padding: 12px 18px;
+            color: white;
+            font-size: 16px;
+            width: 100%;
+            outline: none;
+        }
+        .search-input::placeholder {
+            color: #64748b;
+        }
+        .btn-search {
+            background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+            border: none;
+            border-radius: 60px;
+            padding: 10px 24px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #0f172a;
+            transition: all 0.2s;
+        }
+        .btn-search:active {
+            transform: scale(0.95);
+        }
+        .btn-back {
+            background-color: transparent;
+            border: 1px solid #334155;
+            border-radius: 40px;
+            padding: 10px 20px;
+            color: #94a3b8;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-back:active {
+            transform: scale(0.97);
+            background-color: rgba(34, 211, 238, 0.1);
+            border-color: #22d3ee;
+            color: #22d3ee;
+        }
+        .empty-state {
+            background-color: #0f172a;
+            border-radius: 32px;
+            border: 1px dashed #334155;
+            padding: 48px 20px;
+            text-align: center;
+        }
+        .amount-rest {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fbbf24;
+        }
+        .search-icon-bg {
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(34, 211, 238, 0.05) 100%);
+        }
+        .result-badge {
+            background-color: rgba(34, 211, 238, 0.1);
+            border-radius: 30px;
+            padding: 4px 12px;
+            font-size: 11px;
+            color: #22d3ee;
+        }
+    </style>
+</head>
+<body class="bg-dark" style="background-color: #1e293b !important;">
+
+    <!-- Conteneur principal mobile-first -->
+    <div class="container-fluid px-0" style="max-width: 500px; margin: 0 auto; background-color: #1e293b; min-height: 100vh;">
+        
+        <!-- Header -->
+        <div class="header-page px-4 py-4">
+            <div class="d-flex align-items-center">
+                <a href="{{ url_for('index') }}" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Retour
+                </a>
+            </div>
+        </div>
+
+        <div class="px-4 py-3">
+            
+            <!-- Titre de la page -->
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <div class="rounded-circle p-3 search-icon-bg">
+                    <i class="fas fa-search text-info fs-3"></i>
+                </div>
+                <div>
+                    <h1 class="text-white fw-bold mb-0" style="font-size: 24px;">Recherche</h1>
+                    <p class="text-secondary small mb-0">Trouver un client et ses dettes</p>
+                </div>
+            </div>
+
+            <!-- Formulaire de recherche -->
+            <div class="search-card p-4 shadow-lg mb-4">
+                <form action="{{ url_for('recherche') }}" method="get">
+                    <div class="search-input-group d-flex align-items-center">
+                        <i class="fas fa-search text-secondary ms-3"></i>
+                        <input type="text" name="recherche" class="search-input" 
+                               placeholder="Nom du client..." required>
+                        <button type="submit" class="btn-search">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+                <div class="text-center mt-3">
+                    <small class="text-secondary">
+                        <i class="fas fa-info-circle me-1"></i> Recherchez par nom de client
+                    </small>
+                </div>
+            </div>
+
+            <!-- Résultats de recherche -->
+            {% if clients %}
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <i class="fas fa-chart-simple text-info"></i>
+                <span class="text-secondary small">{{ clients|length }} résultat(s) trouvé(s)</span>
+            </div>
+
+            <div class="d-flex flex-column gap-3">
+                {% for r in clients %}
+                <div class="result-card p-3">
+                    <!-- En-tête : client -->
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-user-circle text-info fs-4"></i>
+                            <div>
+                                <h5 class="text-white fw-semibold mb-0">{{ r.nom }}</h5>
+                                <span class="result-badge">
+                                    <i class="fas fa-tag"></i> Client
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description de la dette -->
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <i class="fas fa-pen text-secondary small"></i>
+                            <span class="text-secondary small">Description</span>
+                        </div>
+                        <p class="text-white mb-0 ps-3">{{ r.description }}</p>
+                    </div>
+
+                    <!-- Montant restant -->
+                    <div class="mt-3 pt-2 border-top border-secondary" style="border-color: rgba(51, 65, 85, 0.3) !important;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-secondary">
+                                    <i class="fas fa-coins me-1"></i> Restant à payer
+                                </small>
+                                <div class="amount-rest">{{ r.montant_rest }} UM</div>
+                            </div>
+                            <div class="bg-warning bg-opacity-10 rounded-circle p-2">
+                                <i class="fas fa-money-bill-wave text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            
+            <!-- Message si aucun résultat -->
+            <div class="empty-state">
+                <i class="fas fa-search text-secondary fs-1 mb-3 d-block"></i>
+                {% if request.args.get('recherche') %}
+                <h5 class="text-secondary mb-2">Aucun résultat</h5>
+                <p class="text-secondary small">
+                    Aucun client trouvé pour "{{ request.args.get('recherche') }}"
+                </p>
+                {% else %}
+                <h5 class="text-secondary mb-2">Effectuez une recherche</h5>
+                <p class="text-secondary small">Saisissez un nom de client ci-dessus</p>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- Message informatif -->
+            <div class="text-center mt-4 pt-3">
+                <small class="text-secondary">
+                    <i class="fas fa-shield-alt me-1 text-info"></i> 
+                    Recherche instantanée - Résultats en temps réel
+                </small>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-secondary small py-4 mt-3 border-top border-secondary" style="border-color: rgba(51, 65, 85, 0.5) !important;">
+            <i class="fas fa-lock me-1"></i> Paiements sécurisés 
+            <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i> 
+            AppDette 
+            <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i> 
+            
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Accueil | Gestion Dettes Premium</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #1e293b;
+        }
+        .card-hover {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card-hover:active {
+            transform: scale(0.97);
+        }
+        .icon-circle {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 24px;
+            margin-bottom: 12px;
+        }
+        .grid-card {
+            min-height: 120px;
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+<body class="bg-secondary bg-opacity-10" style="background-color: #1e293b !important;">
+
+    <!-- Conteneur principal mobile-first -->
+    <div class="container-fluid px-0" style="max-width: 500px; margin: 0 auto; background-color: #1e293b; min-height: 100vh;">
+        
+        <!-- ========== HEADER "ACCUEIL" ========== -->
+        <div class="pt-4 pb-3 px-4" style="background-color: #1e293b;">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="display-6 fw-bold mb-0 text-white">Accueil</h1>
+                    <p class="text-info mb-0 small mt-1">
+                        <i class="fas fa-store me-1"></i> Magasin d'alimentation
+                    </p>
+                </div>
+                <div class="bg-info bg-opacity-25 rounded-circle p-2">
+                    <i class="fas fa-user-circle text-info fs-3"></i>
+                </div>
+            </div>
+            <div class="mt-3">
+                <span class="badge bg-info bg-opacity-25 text-info px-3 py-2 rounded-pill">
+                    <i class="fas fa-shield-alt me-1"></i> COMPTE PREMIUM
+                </span>
+            </div>
+        </div>
+
+        <!-- ========== MENU EN GRILLE 2 COLONNES ========== -->
+        <div class="px-3 py-4">
+            <div class="row g-3">
+                
+                <!-- LIGNE 1 : Ajouter Dette + Liste Dettes -->
+                <div class="col-6">
+                    <a href="{{ url_for('ajouter_dette') }}" class="text-decoration-none">
+                        <div class="card bg-dark text-white border-secondary rounded-4 shadow-sm grid-card card-hover h-100">
+                            <div class="card-body text-center py-3">
+                                <div class="icon-circle bg-info bg-opacity-10 mx-auto">
+                                    <i class="fas fa-file-invoice-dollar text-info fs-4"></i>
+                                </div>
+                                <h6 class="fw-semibold mb-0 mt-2">Ajouter Dette</h6>
+                                <small class="text-secondary">Crédit client</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-6">
+                    <a href="{{ url_for('liste_dette') }}" class="text-decoration-none">
+                        <div class="card bg-dark text-white border-secondary rounded-4 shadow-sm grid-card card-hover h-100">
+                            <div class="card-body text-center py-3">
+                                <div class="icon-circle bg-info bg-opacity-10 mx-auto">
+                                    <i class="fas fa-receipt text-info fs-4"></i>
+                                </div>
+                                <h6 class="fw-semibold mb-0 mt-2">Liste Dettes</h6>
+                                <small class="text-secondary">Transactions</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- LIGNE 2 : Ajouter Client + Liste Clients -->
+                <div class="col-6">
+                    <a href="{{ url_for('ajouter') }}" class="text-decoration-none">
+                        <div class="card bg-dark text-white border-secondary rounded-4 shadow-sm grid-card card-hover h-100">
+                            <div class="card-body text-center py-3">
+                                <div class="icon-circle bg-info bg-opacity-10 mx-auto">
+                                    <i class="fas fa-user-plus text-info fs-4"></i>
+                                </div>
+                                <h6 class="fw-semibold mb-0 mt-2">Ajouter Client</h6>
+                                <small class="text-secondary">Nouveau client</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-6">
+                    <a href="{{ url_for('liste') }}" class="text-decoration-none">
+                        <div class="card bg-dark text-white border-secondary rounded-4 shadow-sm grid-card card-hover h-100">
+                            <div class="card-body text-center py-3">
+                                <div class="icon-circle bg-info bg-opacity-10 mx-auto">
+                                    <i class="fas fa-users text-info fs-4"></i>
+                                </div>
+                                <h6 class="fw-semibold mb-0 mt-2">Liste Clients</h6>
+                                <small class="text-secondary">Consulter</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- LIGNE 3 : Ajouter Reste + Liste des Restes -->
+                <div class="col-6">
+                    <a href="{{ url_for('ajouter_avoir') }}" class="text-decoration-none">
+                        <div class="card bg-dark text-white border-secondary rounded-4 shadow-sm grid-card card-hover h-100">
+                            <div class="card-body text-center py-3">
+                                <div class="icon-circle bg-success bg-opacity-10 mx-auto">
+                                    <i class="fas fa-plus-circle text-success fs-4"></i>
+                                </div>
+                                <h6 class="fw-semibold mb-0 mt-2">Ajouter Reste</h6>
+                                <small class="text-secondary">Avoir client</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-6">
+                    <a href="{{ url_for('liste_avoirs') }}" class="text-decoration-none">
+                        <div class="card bg-dark text-white border-secondary rounded-4 shadow-sm grid-card card-hover h-100">
+                            <div class="card-body text-center py-3">
+                                <div class="icon-circle bg-success bg-opacity-10 mx-auto">
+                                    <i class="fas fa-coins text-success fs-4"></i>
+                                </div>
+                                <h6 class="fw-semibold mb-0 mt-2">Liste des Restes</h6>
+                                <small class="text-secondary">Avoirs clients</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- LIGNE 4 : Paiement en attente + Demandes refusées -->
+                <div class="col-6">
+                    <a href="{{ url_for('paiement_en_attente') }}" class="text-decoration-none">
+                        <div class="card bg-dark text-white border-secondary rounded-4 shadow-sm grid-card card-hover h-100">
+                            <div class="card-body text-center py-3">
+                                <div class="icon-circle bg-warning bg-opacity-10 mx-auto">
+                                    <i class="fas fa-hourglass-half text-warning fs-4"></i>
+                                </div>
+                                <h6 class="fw-semibold mb-0 mt-2">Paiement en attente</h6>
+                                <small class="text-secondary">À encaisser</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-6">
+                    <a href="{{ url_for('demandes_refuses') }}" class="text-decoration-none">
+                        <div class="card bg-dark text-white border-secondary rounded-4 shadow-sm grid-card card-hover h-100">
+                            <div class="card-body text-center py-3">
+                                <div class="icon-circle bg-danger bg-opacity-10 mx-auto">
+                                    <i class="fas fa-ban text-danger fs-4"></i>
+                                </div>
+                                <h6 class="fw-semibold mb-0 mt-2">Demandes refusées</h6>
+                                <small class="text-secondary">Rejetés</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- LIGNE 5 : Archive + Recherche -->
+                <div class="col-6">
+                    <a href="{{ url_for('archive') }}" class="text-decoration-none">
+                        <div class="card bg-dark text-white border-secondary rounded-4 shadow-sm grid-card card-hover h-100">
+                            <div class="card-body text-center py-3">
+                                <div class="icon-circle bg-success bg-opacity-10 mx-auto">
+                                    <i class="fas fa-archive text-success fs-4"></i>
+                                </div>
+                                <h6 class="fw-semibold mb-0 mt-2">Archive</h6>
+                                <small class="text-secondary">Historique</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-6">
+                    <a href="{{ url_for('recherche') }}" class="text-decoration-none">
+                        <div class="card bg-dark text-white border-secondary rounded-4 shadow-sm grid-card card-hover h-100">
+                            <div class="card-body text-center py-3">
+                                <div class="icon-circle bg-info bg-opacity-10 mx-auto">
+                                    <i class="fas fa-search text-info fs-4"></i>
+                                </div>
+                                <h6 class="fw-semibold mb-0 mt-2">Recherche</h6>
+                                <small class="text-secondary">Chercher</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ========== DÉCONNEXION (en bas) ========== -->
+        <div class="px-3 pb-4">
+            <a href="{{ url_for('logout') }}" class="text-decoration-none">
+                <div class="card bg-dark text-white border-danger rounded-4 shadow-sm card-hover">
+                    <div class="card-body d-flex align-items-center justify-content-between py-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="bg-danger bg-opacity-10 rounded-circle p-3">
+                                <i class="fas fa-sign-out-alt text-danger fs-5"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-semibold mb-0 text-danger">Déconnexion</h5>
+                                <small class="text-secondary">Quitter l'application</small>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-right text-danger opacity-50"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-secondary small py-3 border-top border-secondary mt-2">
+            <i class="fas fa-lock me-1"></i> Paiements sécurisés 
+            <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i> 
+            AppDette
+            <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i> 
+            
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

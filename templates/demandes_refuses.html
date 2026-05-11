@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Demandes refusées | Gestion Dettes Premium</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #1e293b;
+        }
+        .header-page {
+            background-color: #0f172a;
+            border-bottom: 1px solid rgba(34, 211, 238, 0.15);
+        }
+        .refused-card {
+            background-color: #0f172a;
+            border-radius: 24px;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            transition: all 0.2s ease;
+        }
+        .refused-card:active {
+            transform: scale(0.98);
+        }
+        .status-badge-refused {
+            background-color: rgba(239, 68, 68, 0.15);
+            border-radius: 30px;
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #f87171;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            width: fit-content;
+        }
+        .amount-refused {
+            font-size: 18px;
+            font-weight: 700;
+            color: #f87171;
+        }
+        .btn-back {
+            background-color: transparent;
+            border: 1px solid #334155;
+            border-radius: 40px;
+            padding: 10px 20px;
+            color: #94a3b8;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-back:active {
+            transform: scale(0.97);
+            background-color: rgba(34, 211, 238, 0.1);
+            border-color: #22d3ee;
+            color: #22d3ee;
+        }
+        .badge-count {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border-radius: 30px;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .empty-state {
+            background-color: #0f172a;
+            border-radius: 32px;
+            border: 1px dashed #334155;
+            padding: 48px 20px;
+            text-align: center;
+        }
+        .total-refused {
+            background-color: #0f172a;
+            border-radius: 28px;
+            padding: 14px 20px;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+        .refused-icon-bg {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.05) 100%);
+        }
+    </style>
+</head>
+<body class="bg-dark" style="background-color: #1e293b !important;">
+
+    <!-- Conteneur principal mobile-first -->
+    <div class="container-fluid px-0" style="max-width: 500px; margin: 0 auto; background-color: #1e293b; min-height: 100vh;">
+        
+        <!-- Header -->
+        <div class="header-page px-4 py-4">
+            <div class="d-flex align-items-center justify-content-between">
+                <a href="{{ url_for('index') }}" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Retour
+                </a>
+                <div class="badge-count">
+                    <i class="fas fa-ban me-1"></i> {{ demandes|length }} refusé(s)
+                </div>
+            </div>
+        </div>
+
+        <div class="px-4 py-3">
+            
+            <!-- Titre de la page -->
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <div class="rounded-circle p-3 refused-icon-bg">
+                    <i class="fas fa-times-circle text-danger fs-3"></i>
+                </div>
+                <div>
+                    <h1 class="text-white fw-bold mb-0" style="font-size: 24px;">Demandes refusées</h1>
+                    <p class="text-secondary small mb-0">Paiements rejetés</p>
+                </div>
+            </div>
+
+            <!-- Vérification si la liste est vide -->
+            {% if demandes|length == 0 %}
+            <div class="empty-state">
+                <i class="fas fa-check-circle text-success fs-1 mb-3 d-block"></i>
+                <h5 class="text-secondary mb-2">Aucune demande refusée</h5>
+                <p class="text-secondary small">Toutes les demandes ont été acceptées</p>
+                <a href="{{ url_for('index') }}" class="btn-back mt-3">
+                    <i class="fas fa-home"></i> Retour à l'accueil
+                </a>
+            </div>
+            {% else %}
+            
+            <!-- Total des montants refusés -->
+            <div class="total-refused mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <small class="text-secondary">Total des refus</small>
+                        <div class="amount-refused">
+                            {% set total = demandes|sum(attribute='montant') %}
+                            {{ total }} Ouguiya
+                        </div>
+                    </div>
+                    <div class="bg-danger bg-opacity-10 rounded-circle p-2">
+                        <i class="fas fa-ban text-danger fs-4"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Liste des demandes refusées (cards) -->
+            <div class="d-flex flex-column gap-3">
+                {% for demande in demandes %}
+                <div class="refused-card p-3">
+                    <!-- En-tête : client et statut -->
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-user-circle text-danger fs-5"></i>
+                            <h5 class="text-white fw-semibold mb-0">{{ demande.nom }}</h5>
+                        </div>
+                        <span class="status-badge-refused">
+                            <i class="fas fa-times-circle"></i> Refusé
+                        </span>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-2">
+                        <p class="text-secondary small mb-1">
+                            <i class="fas fa-pen me-1"></i> {{ demande.description }}
+                        </p>
+                    </div>
+
+                    <!-- Montant et Date -->
+                    <div class="d-flex justify-content-between align-items-center mt-3 pt-1">
+                        <div>
+                            <small class="text-secondary">Montant</small>
+                            <div class="amount-refused">{{ demande.montant }} Ouguiya</div>
+                        </div>
+                        <div class="text-end">
+                            <small class="text-secondary">Date de la demande</small>
+                            <div class="text-white small">
+                                <i class="fas fa-calendar-alt me-1"></i> {{ demande.date_demande }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ligne de séparation subtile -->
+                    <div class="border-top border-secondary mt-3 pt-2" style="border-color: rgba(51, 65, 85, 0.3) !important;">
+                        <small class="text-danger">
+                            <i class="fas fa-info-circle me-1"></i> Paiement non autorisé
+                        </small>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            {% endif %}
+
+            <!-- Message informatif -->
+            <div class="text-center mt-4 pt-3">
+                <small class="text-secondary">
+                    <i class="fas fa-shield-alt me-1 text-danger"></i> 
+                    Les demandes refusées peuvent être re-soumises
+                </small>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-secondary small py-4 mt-3 border-top border-secondary" style="border-color: rgba(51, 65, 85, 0.5) !important;">
+            <i class="fas fa-lock me-1"></i> Paiements sécurisés 
+            <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i> 
+            AppDette
+            <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i> 
+            
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>
