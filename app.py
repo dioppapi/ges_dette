@@ -5,14 +5,14 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 app=Flask(__name__)
-app.secret_key=os.getenv("secret_key")
+app.secret_key=os.getenv("MYSQLPASSWORD")
 def connection():
     return mysql.connector.connect(
-        host=os.getenv("host"),
-        port=int(os.getenv("port")),
-        user=os.getenv("user"),
-        password=os.getenv("password"),
-        database=os.getenv("db")
+        host=os.getenv("MYSQLHOST"),
+        port=int(os.getenv("MYSQLPORT")),
+        user=os.getenv("MYSQLUSER"),
+        password=os.getenv("MYSQLPASSWORD"),
+        database=os.getenv("MYSQLDATABASE")
     )
 @app.route("/")
 def index():
