@@ -45,8 +45,8 @@ Installation
 
 1. Clone the repository:
    
-   git clone YOUR_REPOSITORY_URL
-cd YOUR_PROJECT_FOLDER
+   git clone https://github.com/dioppapi/ges_dette
+cd ges_btq
 
 2. Install the required dependencies:
    
