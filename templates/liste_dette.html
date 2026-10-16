@@ -3,82 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Liste des dettes | Gestion Dettes Premium</title>
+    <title>Liste des dettes | Gestion Dettes</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
-        body {
-            background-color: #1e293b;
-        }
+        body { background-color: #1e293b; }
         .header-page {
             background-color: #0f172a;
             border-bottom: 1px solid rgba(34, 211, 238, 0.15);
-        }
-        .debt-card {
-            background-color: #0f172a;
-            border-radius: 24px;
-            border: 1px solid rgba(34, 211, 238, 0.1);
-            transition: all 0.2s ease;
-        }
-        .debt-card:active {
-            transform: scale(0.98);
-        }
-        .status-badge {
-            border-radius: 30px;
-            padding: 4px 12px;
-            font-size: 11px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            width: fit-content;
-        }
-        .status-pending {
-            background-color: rgba(245, 158, 11, 0.15);
-            color: #fbbf24;
-        }
-        .status-paid {
-            background-color: rgba(34, 197, 94, 0.15);
-            color: #4ade80;
-        }
-        .status-refused {
-            background-color: rgba(239, 68, 68, 0.15);
-            color: #f87171;
-        }
-        .btn-pay {
-            background-color: rgba(34, 211, 238, 0.1);
-            border: 1px solid rgba(34, 211, 238, 0.3);
-            border-radius: 30px;
-            padding: 8px 16px;
-            font-size: 12px;
-            font-weight: 500;
-            color: #22d3ee;
-            text-decoration: none;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .btn-pay:active {
-            transform: scale(0.95);
-            background-color: rgba(34, 211, 238, 0.2);
-        }
-        .btn-bank {
-            background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
-            border: none;
-            border-radius: 30px;
-            padding: 8px 16px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #0f172a;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
-        }
-        .btn-bank:active {
-            transform: scale(0.95);
+            padding: 16px 20px;
         }
         .btn-back {
             background-color: transparent;
@@ -100,6 +34,217 @@
             border-color: #22d3ee;
             color: #22d3ee;
         }
+        .total-box {
+            background: #0f172a;
+            border-radius: 20px;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 12px 0 16px;
+            border: 1px solid rgba(34, 211, 238, 0.15);
+        }
+        .total-box .info span {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .total-box .info strong {
+            font-size: 22px;
+            font-weight: 700;
+            color: #22d3ee;
+        }
+        .total-box .icon {
+            font-size: 24px;
+            color: #22d3ee;
+            opacity: 0.3;
+        }
+        .debt-card {
+            background-color: #0f172a;
+            border-radius: 24px;
+            border: 1px solid rgba(34, 211, 238, 0.1);
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+        }
+        .debt-card .debt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .debt-card .client-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            color: #f1f5f9;
+        }
+        .debt-card .client-name i {
+            color: #22d3ee;
+            font-size: 20px;
+        }
+        .status-badge {
+            font-size: 11px;
+            font-weight: 500;
+            padding: 3px 12px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .status-badge.pending {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+        }
+        .status-badge.paid {
+            background: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+        }
+        .debt-card .description {
+            font-size: 14px;
+            color: #94a3b8;
+            margin: 8px 0 12px 28px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .debt-card .description i {
+            font-size: 12px;
+            color: #64748b;
+        }
+        .debt-amounts {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            padding: 12px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            margin: 8px 0 12px;
+        }
+        .amount-item {
+            text-align: center;
+        }
+        .amount-item .label {
+            font-size: 10px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .amount-item .value {
+            font-size: 15px;
+            font-weight: 700;
+            color: #f1f5f9;
+            margin-top: 2px;
+        }
+        .amount-item .value.total { color: #22d3ee; }
+        .amount-item .value.paid { color: #4ade80; }
+        .amount-item .value.rest { color: #fbbf24; }
+        .amount-item .value.rest.zero { color: #4ade80; }
+        .debt-date {
+            font-size: 12px;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+        .actions-container {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            flex-wrap: wrap;
+        }
+        .btn-pay {
+            background: rgba(245, 158, 11, 0.12);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.15);
+            border-radius: 30px;
+            padding: 10px 16px;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            flex: 2;
+            min-width: 130px;
+        }
+        .btn-pay:active {
+            transform: scale(0.95);
+            background: rgba(245, 158, 11, 0.25);
+        }
+        .btn-edit {
+            background: rgba(59, 130, 246, 0.12);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            border-radius: 30px;
+            padding: 10px 14px;
+            font-weight: 500;
+            font-size: 13px;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            flex: 1;
+            min-width: 90px;
+        }
+        .btn-edit:active {
+            transform: scale(0.95);
+            background: rgba(59, 130, 246, 0.25);
+        }
+        .btn-copy-action {
+            background: rgba(34, 211, 238, 0.08);
+            color: #22d3ee;
+            border: 1px solid rgba(34, 211, 238, 0.15);
+            border-radius: 30px;
+            padding: 10px 14px;
+            font-weight: 500;
+            font-size: 13px;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            flex: 1;
+            min-width: 90px;
+        }
+        .btn-copy-action:active {
+            transform: scale(0.95);
+            background: rgba(34, 211, 238, 0.2);
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: #0f172a;
+            border-radius: 24px;
+            border: 1px dashed #334155;
+        }
+        .empty-state i {
+            font-size: 48px;
+            color: #64748b;
+            opacity: 0.3;
+            margin-bottom: 12px;
+        }
+        .empty-state h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #94a3b8;
+        }
+        .empty-state p {
+            font-size: 14px;
+            color: #64748b;
+        }
         .badge-count {
             background-color: rgba(34, 211, 238, 0.15);
             color: #22d3ee;
@@ -108,31 +253,231 @@
             font-size: 12px;
             font-weight: 500;
         }
-        .amount-total {
-            font-size: 20px;
-            font-weight: 700;
-            color: #22d3ee;
+        /* Popups */
+        .popup-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(5, 10, 25, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 20px;
         }
-        .amount-rest {
+        .popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .popup-card {
+            background: #0f172a;
+            border-radius: 28px;
+            max-width: 420px;
+            width: 100%;
+            padding: 28px 24px;
+            border: 1px solid rgba(34, 211, 238, 0.1);
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+            animation: popupIn 0.3s ease;
+        }
+        @keyframes popupIn {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .popup-header h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .popup-header h3 i { color: #22d3ee; }
+        .popup-close {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+        .popup-body {
+            color: #94a3b8;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .popup-footer {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+        .btn-secondary-popup {
+            background: transparent;
+            border: 1px solid #334155;
+            border-radius: 40px;
+            padding: 10px 24px;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .btn-secondary-popup:active {
+            transform: scale(0.97);
+            background: rgba(255, 255, 255, 0.04);
+        }
+        .btn-primary-popup {
+            background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+            border: none;
+            border-radius: 40px;
+            padding: 10px 24px;
             font-size: 14px;
             font-weight: 600;
+            color: #0f172a;
+            cursor: pointer;
         }
-        .empty-state {
-            background-color: #0f172a;
-            border-radius: 32px;
-            border: 1px dashed #334155;
-            padding: 48px 20px;
+        .btn-primary-popup:active { transform: scale(0.97); }
+        .btn-copy-text {
+            background: rgba(34, 211, 238, 0.08);
+            border: 1px solid rgba(34, 211, 238, 0.15);
+            border-radius: 40px;
+            padding: 10px 20px;
+            color: #22d3ee;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-copy-text:active {
+            transform: scale(0.97);
+            background: rgba(34, 211, 238, 0.2);
+        }
+        .copy-box {
+            background: #1e293b;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .copy-box pre {
+            margin: 0;
+            font-family: 'Inter', monospace;
+            font-size: 13px;
+            color: #f1f5f9;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .payment-choice {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 12px 0;
+        }
+        .choice-btn {
+            background: #1e293b;
+            border: 2px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 16px 12px;
             text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .choice-btn:active { transform: scale(0.96); }
+        .choice-btn .icon { font-size: 28px; }
+        .choice-btn .label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #94a3b8;
+        }
+        .choice-btn.active {
+            border-color: #22d3ee;
+            background: rgba(34, 211, 238, 0.08);
+        }
+        .choice-btn.active .label { color: #22d3ee; }
+        .choice-btn.cash .icon { color: #4ade80; }
+        .choice-btn.mobile .icon { color: #22d3ee; }
+        .form-control-custom {
+            width: 100%;
+            padding: 14px 18px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 28px;
+            color: #f1f5f9;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.2s;
+            appearance: none;
+            cursor: pointer;
+        }
+        .form-control-custom:focus {
+            border-color: #22d3ee;
+            box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.15);
+        }
+        .form-control-custom::placeholder { color: #94a3b8; }
+        .form-control-custom option {
+            background: #0f172a;
+            color: #f1f5f9;
+        }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: #0f172a;
+            color: #f1f5f9;
+            padding: 12px 24px;
+            border-radius: 30px;
+            border: 1px solid rgba(34, 211, 238, 0.12);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.35s ease;
+            z-index: 2000;
+            max-width: 90%;
+        }
+        .toast i { color: #22d3ee; font-size: 18px; }
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        @media (max-width: 400px) {
+            .debt-amounts { gap: 4px; }
+            .amount-item .value { font-size: 13px; }
+            .btn-pay { font-size: 12px; padding: 8px 12px; }
+            .btn-edit, .btn-copy-action { font-size: 12px; padding: 8px 12px; }
         }
     </style>
 </head>
-<body class="bg-dark" style="background-color: #1e293b !important;">
-
-    <!-- Conteneur principal mobile-first -->
+<body>
     <div class="container-fluid px-0" style="max-width: 500px; margin: 0 auto; background-color: #1e293b; min-height: 100vh;">
         
-        <!-- Header -->
-        <div class="header-page px-4 py-4">
+        <div class="header-page">
             <div class="d-flex align-items-center justify-content-between">
                 <a href="{{ url_for('index') }}" class="btn-back">
                     <i class="fas fa-arrow-left"></i> Retour
@@ -145,120 +490,430 @@
 
         <div class="px-4 py-3">
             
-            <!-- Titre de la page -->
             <div class="d-flex align-items-center gap-3 mb-4">
                 <div class="rounded-circle p-3" style="background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(34, 211, 238, 0.05) 100%);">
                     <i class="fas fa-file-invoice-dollar text-info fs-3"></i>
                 </div>
                 <div>
-                    <h1 class="text-white fw-bold mb-0" style="font-size: 24px;">Mes Dettes</h1>
+                    <h1 class="text-white fw-bold mb-0" style="font-size: 24px;">Liste des dettes</h1>
                     <p class="text-secondary small mb-0">Suivi des crédits clients</p>
                 </div>
             </div>
 
-            <!-- Vérification si la liste est vide -->
             {% if dettes|length == 0 %}
             <div class="empty-state">
-                <i class="fas fa-receipt text-secondary fs-1 mb-3 d-block"></i>
-                <h5 class="text-secondary mb-2">Aucune dette</h5>
-                <p class="text-secondary small">Ajoutez une dette depuis l'accueil</p>
+                <i class="fas fa-receipt"></i>
+                <h3>Aucune dette</h3>
+                <p>Ajoutez une dette depuis l'accueil</p>
                 <a href="{{ url_for('ajouter_dette') }}" class="btn-back mt-3">
-                    <i class="fas fa-plus"></i> Ajouter une dette
+                    <i class="fas fa-plus-circle"></i> Nouvelle dette
                 </a>
             </div>
             {% else %}
-            
-            <!-- Liste des dettes (cards) -->
+
+            <div class="total-box">
+                <div class="info">
+                    <span>Total des dettes</span>
+                    <strong>{{ dettes|sum(attribute='montant_tot') }} UM</strong>
+                </div>
+                <div class="icon"><i class="fas fa-chart-line"></i></div>
+            </div>
+
             <div class="d-flex flex-column gap-3">
                 {% for dette in dettes %}
-                <div class="debt-card p-3">
-                    <!-- En-tête de la carte : client et statut -->
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="fas fa-user-circle text-info fs-5"></i>
-                            <h5 class="text-white fw-semibold mb-0">{{ dette.nom }}</h5>
+                <div class="debt-card">
+                    
+                    <div class="debt-header">
+                        <div class="client-name">
+                            <i class="fas fa-user-circle"></i>
+                            {{ dette.nom }}
                         </div>
-                        {% if dette.status == 'en attente' %}
-                        <span class="status-badge status-pending">
-                            <i class="fas fa-hourglass-half"></i> {{ dette.status }}
-                        </span>
-                        {% elif dette.status == 'payé' %}
-                        <span class="status-badge status-paid">
-                            <i class="fas fa-check-circle"></i> {{ dette.status }}
-                        </span>
+                        {% if dette.status == 'Ouvert' %}
+                        <span class="status-badge pending">⏳ En attente</span>
+                        {% elif dette.status == 'Soldée' %}
+                        <span class="status-badge paid">✅ Soldée</span>
                         {% else %}
-                        <span class="status-badge status-refused">
-                            <i class="fas fa-times-circle"></i> {{ dette.status }}
-                        </span>
+                        <span class="status-badge pending">❓ {{ dette.status }}</span>
                         {% endif %}
                     </div>
 
-                    <!-- Description -->
-                    <div class="mb-2">
-                        <p class="text-secondary small mb-1">
-                            <i class="fas fa-pen me-1"></i> {{ dette.description }}
-                        </p>
+                    <div class="description">
+                        <i class="fas fa-pen"></i> {{ dette.description }}
                     </div>
 
-                    <!-- Montants -->
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div>
-                            <small class="text-secondary">Montant total</small>
-                            <div class="amount-total">{{ dette.montant_tot }} Ouguiya</div>
+                    <div class="debt-amounts">
+                        <div class="amount-item">
+                            <div class="label">Total</div>
+                            <div class="value total">{{ dette.montant_tot }} UM</div>
                         </div>
-                        <div class="text-end">
-                            <small class="text-secondary">Reste à payer</small>
-                            <div class="amount-rest text-white {% if dette.montant_rest == 0 %}text-success{% else %}text-warning{% endif %}">
-                                {{ dette.montant_rest }} Ouguiya
+                        <div class="amount-item">
+                            <div class="label">Payé</div>
+                            <div class="value paid">{{ dette.montant_paye|default(0) }} UM</div>
+                        </div>
+                        <div class="amount-item">
+                            <div class="label">Restant</div>
+                            <div class="value rest {% if dette.montant_rest == 0 %}zero{% endif %}">
+                                {{ dette.montant_rest }} UM
                             </div>
                         </div>
                     </div>
 
-                    <!-- Date -->
-                    <div class="mb-3">
-                        <small class="text-secondary">
-                            <i class="fas fa-calendar-alt me-1"></i> {{ dette.date_dette }}
-                        </small>
+                    <div class="debt-date">
+                        <i class="fas fa-calendar-alt"></i> {{ dette.date_dette }}
                     </div>
 
-                    <!-- Actions : Paiement et Application Bancaire -->
-                    <div class="d-flex gap-2">
-                        <a href="/payer/{{ dette.id_dette }}" class="btn-pay flex-grow-1 justify-content-center">
-                            <i class="fas fa-money-bill-wave"></i> Payer
+                    <div class="actions-container">
+                        <button class="btn-pay" onclick="openPaymentChoice(
+                            '{{ dette.id_dette }}',
+                            '{{ dette.nom }}',
+                            '{{ dette.montant_rest }}'
+                        )">
+                            <i class="fas fa-hand-holding-usd"></i> Payer
+                        </button>
+                        <a href="{{ url_for('modifier_dette', id_dette=dette.id_dette) }}" class="btn-edit">
+                            <i class="fas fa-edit"></i> Modifier
                         </a>
-                        <a href="/demande_payement/{{ dette.id_dette }}" class="btn-bank flex-grow-1 justify-content-center">
-                            <i class="fas fa-university"></i> Banque
-                        </a>
+                        <button class="btn-copy-action" onclick="copyDette(
+                            '{{ dette.nom }}',
+                            '{{ dette.description }}',
+                            '{{ dette.montant_tot }}',
+                            '{{ dette.montant_paye|default(0) }}',
+                            '{{ dette.montant_rest }}',
+                            '{{ dette.status }}',
+                            '{{ dette.date_dette }}'
+                        )">
+                            <i class="fas fa-copy"></i> Copier
+                        </button>
                     </div>
+
                 </div>
                 {% endfor %}
             </div>
-            
-            {% endif %}
 
-            <!-- Petit message informatif -->
-            <div class="text-center mt-4 pt-3">
-                <small class="text-secondary">
-                    <i class="fas fa-chart-line me-1 text-info"></i> 
-                    {% set total_dettes = dettes|sum(attribute='montant_tot') %}
-                    Total général : {{ total_dettes }} Ouguiya
-                </small>
-            </div>
+            {% endif %}
 
         </div>
 
-        <!-- Footer -->
         <div class="text-center text-secondary small py-4 mt-3 border-top border-secondary" style="border-color: rgba(51, 65, 85, 0.5) !important;">
             <i class="fas fa-lock me-1"></i> Paiements sécurisés 
             <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i> 
-            AppDette
-            <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i> 
-            
+            AppDette v2.0
         </div>
 
     </div>
 
+    <!-- POPUP COPIER -->
+    <div id="popupCopy" class="popup-overlay">
+        <div class="popup-card">
+            <div class="popup-header">
+                <h3><i class="fas fa-copy"></i> Copier la dette</h3>
+                <button class="popup-close" onclick="closePopupCopy()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="popup-body">
+                <p style="font-size:14px;margin-bottom:12px;">
+                    <i class="fas fa-info-circle"></i> Copiez les informations ci-dessous :
+                </p>
+                <div class="copy-box" id="copyContent">
+                    <pre id="copyText"></pre>
+                </div>
+                <button class="btn-copy-text" onclick="copyToClipboard()">
+                    <i class="fas fa-copy"></i> Copier le texte
+                </button>
+            </div>
+            <div class="popup-footer">
+                <button class="btn-secondary-popup" onclick="closePopupCopy()">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP PAIEMENT -->
+    <div id="popupPaymentChoice" class="popup-overlay">
+        <div class="popup-card">
+            <div class="popup-header">
+                <h3><i class="fas fa-hand-holding-usd"></i> Enregistrer un paiement</h3>
+                <button class="popup-close" onclick="closePaymentChoice()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="popup-body">
+
+                <p style="font-size:14px;margin-bottom:12px;">
+                    <i class="fas fa-info-circle"></i> Comment le client a-t-il payé ?
+                </p>
+
+                <div class="payment-choice">
+                    <button type="button" class="choice-btn cash active" onclick="selectPaymentMethod('cash')">
+                        <span class="icon">💵</span>
+                        <span class="label">Paiement en espèces</span>
+                    </button>
+                    <button type="button" class="choice-btn mobile" onclick="selectPaymentMethod('mobile')">
+                        <span class="icon">📱</span>
+                        <span class="label">Paiement mobile</span>
+                    </button>
+                </div>
+
+                <div id="appSelector" style="display:none;">
+                    <label style="font-size:13px;font-weight:500;color:#94a3b8;display:block;margin-bottom:6px;">
+                        <i class="fas fa-mobile-alt"></i> Service de paiement
+                    </label>
+                    <select id="appSelect" class="form-control-custom">
+                        <option value="" disabled selected>Sélectionnez un service ▼</option>
+                        <option value="Bankily">🏦 Bankily</option>
+                        <option value="Masrivi">🏦 Masrivi</option>
+                        <option value="Sedad">🏦 Sedad</option>
+                        <option value="Click">📱 Click</option>
+                        <option value="BIM Bank">🏦 BIM Bank</option>
+                    </select>
+                </div>
+
+                <div style="margin:12px 0;">
+                    <label style="font-size:13px;font-weight:500;color:#94a3b8;display:block;margin-bottom:6px;">
+                        <i class="fas fa-coins"></i> Montant
+                    </label>
+                    <input type="number" id="paymentAmount" class="form-control-custom" 
+                           placeholder="Montant à payer" min="1" step="1" inputmode="numeric" required>
+                    <div style="font-size:12px;color:#64748b;margin-top:6px;">
+                        <i class="fas fa-info-circle"></i> Maximum : <span id="maxAmount">0</span> UM
+                    </div>
+                </div>
+
+                <div id="mobileInfo" style="display:none;background:rgba(34,211,238,0.06);border-radius:16px;padding:12px 16px;font-size:13px;color:#94a3b8;margin-bottom:12px;border:1px solid rgba(34,211,238,0.06);">
+                    <i class="fas fa-clock" style="color:#22d3ee;"></i>
+                    Le paiement sera en attente jusqu'à confirmation de réception
+                </div>
+
+            </div>
+            <div class="popup-footer">
+                <button class="btn-secondary-popup" onclick="closePaymentChoice()">Annuler</button>
+                <button class="btn-primary-popup" id="confirmPaymentBtn">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Message</span>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script>
+        // ============================================
+        // COPIER
+        // ============================================
+        let currentCopyText = '';
+
+        function copyDette(nom, description, total, paye, rest, status, date) {
+            const statusEmoji = status === 'Ouvert' ? '⏳' : status === 'Soldée' ? '✅' : '❌';
+            const text = `🧾 DETTE\n━━━━━━━━━━━━━━━━━━━━━━━━━\n👤 Client : ${nom}\n📝 Description : ${description}\n💰 Total : ${total} UM\n💵 Payé : ${paye} UM\n📊 Restant : ${rest} UM\n📌 Statut : ${statusEmoji} ${status}\n📅 Date : ${date}\n━━━━━━━━━━━━━━━━━━━━━━━━━`;
+            
+            currentCopyText = text;
+            document.getElementById('copyText').textContent = text;
+            document.getElementById('popupCopy').classList.add('active');
+        }
+
+        function closePopupCopy() {
+            document.getElementById('popupCopy').classList.remove('active');
+        }
+
+        function copyToClipboard() {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(currentCopyText).then(() => {
+                    showToast('✅ Dette copiée !');
+                    closePopupCopy();
+                }).catch(() => fallbackCopy(currentCopyText));
+            } else {
+                fallbackCopy(currentCopyText);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast('✅ Dette copiée !');
+                closePopupCopy();
+            } catch (err) {
+                showToast('❌ Erreur lors de la copie', 'error');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // ============================================
+        // PAIEMENT
+        // ============================================
+        let selectedDetteId = null;
+        let selectedDetteRest = 0;
+        let selectedMethod = 'cash';
+
+        function openPaymentChoice(detteId, nom, rest) {
+            selectedDetteId = detteId;
+            selectedDetteRest = parseInt(rest);
+            selectedMethod = 'cash';
+
+            document.getElementById('maxAmount').textContent = rest;
+            document.getElementById('paymentAmount').value = '';
+            document.getElementById('paymentAmount').max = rest;
+            document.getElementById('appSelector').style.display = 'none';
+            document.getElementById('mobileInfo').style.display = 'none';
+
+            document.querySelectorAll('.choice-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.choice-btn.cash').classList.add('active');
+            document.getElementById('appSelect').value = '';
+
+            document.getElementById('popupPaymentChoice').classList.add('active');
+        }
+
+        function closePaymentChoice() {
+            document.getElementById('popupPaymentChoice').classList.remove('active');
+        }
+
+        function selectPaymentMethod(method) {
+            selectedMethod = method;
+            
+            document.querySelectorAll('.choice-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.choice-btn.${method}`).classList.add('active');
+
+            const appSelector = document.getElementById('appSelector');
+            const mobileInfo = document.getElementById('mobileInfo');
+
+            if (method === 'mobile') {
+                appSelector.style.display = 'block';
+                mobileInfo.style.display = 'block';
+                document.getElementById('appSelect').value = '';
+            } else {
+                appSelector.style.display = 'none';
+                mobileInfo.style.display = 'none';
+            }
+        }
+
+        // ============================================
+        // CONFIRMER PAIEMENT
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const confirmBtn = document.getElementById('confirmPaymentBtn');
+            if (confirmBtn) {
+                confirmBtn.addEventListener('click', function() {
+                    const amount = parseInt(document.getElementById('paymentAmount').value);
+
+                    if (!amount || amount <= 0) {
+                        showToast('❌ Veuillez saisir un montant valide', 'error');
+                        return;
+                    }
+
+                    if (amount > selectedDetteRest) {
+                        showToast('❌ Le montant dépasse le reste à payer', 'error');
+                        return;
+                    }
+
+                    // ============================================
+                    // CAS 1 : Paiement en espèces → POST direct
+                    // ============================================
+                    if (selectedMethod === 'cash') {
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = `/payer/${selectedDetteId}`;
+                        
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'paiement';
+                        input.value = amount;
+                        
+                        form.appendChild(input);
+                        document.body.appendChild(form);
+                        form.submit();
+                        return;
+                    }
+
+                    // ============================================
+                    // CAS 2 : Paiement mobile → demande paiement
+                    // ============================================
+                    if (selectedMethod === 'mobile') {
+                        const selectedApp = document.getElementById('appSelect').value;
+                        if (!selectedApp) {
+                            showToast('❌ Veuillez sélectionner un service', 'error');
+                            return;
+                        }
+
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = `/demande_payement/${selectedDetteId}`;
+                        
+                        const montantInput = document.createElement('input');
+                        montantInput.type = 'hidden';
+                        montantInput.name = 'montant';
+                        montantInput.value = amount;
+                        
+                        const methodInput = document.createElement('input');
+                        methodInput.type = 'hidden';
+                        methodInput.name = 'description';
+                        methodInput.value = selectedApp;
+                        
+                        form.appendChild(montantInput);
+                        form.appendChild(methodInput);
+                        document.body.appendChild(form);
+                        form.submit();
+                    }
+                });
+            }
+
+            document.getElementById('popupPaymentChoice').addEventListener('click', function(e) {
+                if (e.target === this) closePaymentChoice();
+            });
+            document.getElementById('popupCopy').addEventListener('click', function(e) {
+                if (e.target === this) closePopupCopy();
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closePopupCopy();
+                    closePaymentChoice();
+                }
+            });
+        });
+
+        // ============================================
+        // TOAST
+        // ============================================
+        let toastTimeout = null;
+
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            const msg = document.getElementById('toastMessage');
+            const icon = toast ? toast.querySelector('i') : null;
+            
+            if (!toast || !msg) return;
+            
+            if (toastTimeout) {
+                clearTimeout(toastTimeout);
+                toastTimeout = null;
+            }
+            
+            toast.className = 'toast';
+            if (type === 'error') toast.classList.add('error');
+            
+            msg.textContent = message;
+            
+            if (icon) {
+                if (type === 'error') icon.className = 'fas fa-exclamation-circle';
+                else icon.className = 'fas fa-check-circle';
+            }
+            
+            toast.classList.add('show');
+            
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+                toastTimeout = null;
+            }, 2500);
+        }
+    </script>
+
 </body>
 </html>

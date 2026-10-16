@@ -1,0 +1,23 @@
+/* ============================================
+   FOOTER
+   ============================================ */
+.footer {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-muted);
+    padding: 20px 0 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    margin-top: 16px;
+}
+
+.footer i {
+    color: var(--accent);
+    margin-right: 4px;
+}
+
+.footer .dot {
+    color: var(--text-muted);
+    margin: 0 6px;
+    font-size: 4px;
+    vertical-align: middle;
+}

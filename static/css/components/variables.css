@@ -1,0 +1,119 @@
+/* ============================================
+   VARIABLES CSS
+   ============================================ */
+:root {
+    /* Couleurs */
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-card: #1e293b;
+    --bg-input: #1e293b;
+    --bg-hover: #2d3a52;
+    
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    
+    --accent: #22d3ee;
+    --accent-hover: #06b6d4;
+    --accent-glow: rgba(34, 211, 238, 0.12);
+    --accent-glow-strong: rgba(34, 211, 238, 0.2);
+    
+    --success: #22c55e;
+    --success-glow: rgba(34, 197, 94, 0.12);
+    
+    --warning: #f59e0b;
+    --warning-glow: rgba(245, 158, 11, 0.12);
+    
+    --danger: #ef4444;
+    --danger-glow: rgba(239, 68, 68, 0.12);
+    --danger-hover: #dc2626;
+    
+    /* Tailles */
+    --radius: 24px;
+    --radius-sm: 16px;
+    --radius-xs: 28px;
+    --radius-full: 50px;
+    
+    /* Ombres */
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.35);
+    --shadow-glow: 0 0 30px rgba(34, 211, 238, 0.05);
+    
+    /* Transitions */
+    --transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    --transition-fast: all 0.15s ease;
+    --transition-slow: all 0.4s ease;
+    
+    /* Polices */
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ============================================
+   RESET
+   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: var(--font);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    font-family: var(--font);
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+input, select, textarea {
+    font-family: var(--font);
+    outline: none;
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 10px;
+}
+
+/* ============================================
+   CONTAINER
+   ============================================ */
+.app {
+    max-width: 480px;
+    width: 100%;
+    min-height: 100vh;
+    background: var(--bg-primary);
+    padding: 0 16px 30px;
+    position: relative;
+    margin: 0 auto;
+}

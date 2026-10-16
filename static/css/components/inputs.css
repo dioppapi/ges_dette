@@ -1,0 +1,131 @@
+/* ============================================
+   INPUTS
+   ============================================ */
+
+/* Input de base */
+.input-group {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.input-group .input-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 16px;
+}
+
+.input-group .form-control {
+    padding-left: 48px;
+}
+
+/* Input avec validation */
+.input-group .form-control.valid {
+    border-color: var(--success);
+}
+
+.input-group .form-control.valid + .input-icon {
+    color: var(--success);
+}
+
+.input-group .form-control.invalid {
+    border-color: var(--danger);
+}
+
+.input-group .form-control.invalid + .input-icon {
+    color: var(--danger);
+}
+
+/* Input avec bouton */
+.input-group .input-btn {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--accent);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 8px 16px;
+    color: var(--bg-primary);
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.input-group .input-btn:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+/* Input grande taille */
+.form-control-lg {
+    padding: 18px 20px;
+    font-size: 17px;
+}
+
+/* Input petite taille */
+.form-control-sm {
+    padding: 10px 14px;
+    font-size: 13px;
+}
+
+/* Search input */
+.search-input {
+    background: var(--bg-card);
+    border-radius: var(--radius-xs);
+    padding: 12px 18px 12px 44px;
+    border: 1px solid rgba(34, 211, 238, 0.06);
+    color: var(--text-primary);
+    font-size: 15px;
+    width: 100%;
+    transition: var(--transition);
+    position: relative;
+}
+
+.search-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.search-input::placeholder {
+    color: var(--text-muted);
+}
+
+/* Search wrapper */
+.search-wrapper {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.search-wrapper .search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 16px;
+}
+
+/* Input avec erreur */
+.form-control.error {
+    border-color: var(--danger);
+    box-shadow: 0 0 0 3px var(--danger-glow);
+}
+
+.error-message {
+    color: var(--danger);
+    font-size: 12px;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Textarea */
+.form-textarea {
+    min-height: 80px;
+    resize: vertical;
+    font-family: var(--font);
+}

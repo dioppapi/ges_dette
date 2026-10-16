@@ -3,255 +3,737 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Paiements en attente | Gestion Dettes Premium</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Paiements en attente | Gestion Dettes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
-        body {
-            background-color: #1e293b;
+        /* ============================================
+           PAIEMENTS EN ATTENTE - STYLES SPÉCIFIQUES
+           ============================================ */
+
+        .total-box {
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 12px 0 16px;
+            border: 1px solid rgba(255,255,255,0.03);
         }
-        .header-page {
-            background-color: #0f172a;
-            border-bottom: 1px solid rgba(34, 211, 238, 0.15);
+
+        .total-box .info span {
+            font-size: 12px;
+            color: var(--text-secondary);
         }
-        .payment-card {
-            background-color: #0f172a;
-            border-radius: 24px;
-            border: 1px solid rgba(34, 211, 238, 0.1);
-            transition: all 0.2s ease;
+        .total-box .info strong {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--warning);
         }
-        .payment-card:active {
+        .total-box .icon {
+            font-size: 24px;
+            color: var(--warning);
+            opacity: 0.3;
+        }
+
+        /* DEMANDE CARD */
+        .demande-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            border: 1px solid rgba(255,255,255,0.03);
+            margin-bottom: 12px;
+            transition: var(--transition);
+        }
+
+        .demande-card:active {
             transform: scale(0.98);
         }
+
+        .demande-card .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .demande-card .client {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .demande-card .client .avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--warning-glow);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--warning);
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .demande-card .client .name {
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--text-primary);
+        }
+
+        .demande-card .client .sub {
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: block;
+        }
+
+        /* Badge méthode */
         .method-badge {
-            background-color: rgba(34, 211, 238, 0.1);
-            border-radius: 30px;
-            padding: 4px 12px;
-            font-size: 11px;
-            font-weight: 500;
-            color: #22d3ee;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            width: fit-content;
-        }
-        .btn-confirm {
-            background-color: rgba(34, 197, 94, 0.15);
-            border: 1px solid rgba(34, 197, 94, 0.3);
-            border-radius: 30px;
-            padding: 8px 20px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #4ade80;
-            text-decoration: none;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .btn-confirm:active {
-            transform: scale(0.95);
-            background-color: rgba(34, 197, 94, 0.25);
-        }
-        .btn-refuse {
-            background-color: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: 30px;
-            padding: 8px 20px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #f87171;
-            text-decoration: none;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .btn-refuse:active {
-            transform: scale(0.95);
-            background-color: rgba(239, 68, 68, 0.25);
-        }
-        .btn-back {
-            background-color: transparent;
-            border: 1px solid #334155;
-            border-radius: 40px;
-            padding: 10px 20px;
-            color: #94a3b8;
-            font-weight: 500;
-            font-size: 14px;
-            transition: all 0.2s;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .btn-back:active {
-            transform: scale(0.97);
-            background-color: rgba(34, 211, 238, 0.1);
-            border-color: #22d3ee;
-            color: #22d3ee;
-        }
-        .badge-count {
-            background-color: rgba(245, 158, 11, 0.15);
-            color: #fbbf24;
-            border-radius: 30px;
-            padding: 4px 12px;
             font-size: 12px;
             font-weight: 500;
+            padding: 4px 12px;
+            border-radius: 30px;
+            background: var(--bg-primary);
         }
-        .amount-warning {
-            font-size: 18px;
+
+        .method-badge.cash {
+            color: var(--success);
+            border: 1px solid rgba(34, 197, 94, 0.15);
+        }
+
+        .method-badge.mobile {
+            color: var(--accent);
+            border: 1px solid rgba(34, 211, 238, 0.15);
+        }
+
+        .method-badge .app-icon {
+            font-size: 14px;
+        }
+
+        .demande-card .details {
+            display: flex;
+            gap: 20px;
+            padding: 12px 0;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin: 8px 0 12px;
+        }
+
+        .demande-card .details .item {
+            flex: 1;
+        }
+
+        .demande-card .details .item .label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .demande-card .details .item .value {
+            font-size: 16px;
             font-weight: 700;
-            color: #fbbf24;
+            color: var(--text-primary);
+            margin-top: 2px;
         }
-        .empty-state {
-            background-color: #0f172a;
-            border-radius: 32px;
-            border: 1px dashed #334155;
-            padding: 48px 20px;
+
+        .demande-card .details .item .value.montant {
+            color: var(--warning);
+        }
+
+        .demande-card .details .item .value.date {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        /* Actions */
+        .demande-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .demande-actions .btn-confirm {
+            background: var(--success-glow);
+            border: 1px solid rgba(34, 197, 94, 0.15);
+            border-radius: 12px;
+            padding: 14px 12px;
+            color: var(--success);
+            font-size: 15px;
+            font-weight: 600;
             text-align: center;
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
         }
-        .total-pending {
-            background-color: #0f172a;
+
+        .demande-actions .btn-confirm:active {
+            transform: scale(0.96);
+            background: rgba(34, 197, 94, 0.25);
+        }
+
+        .demande-actions .btn-confirm .icon {
+            font-size: 18px;
+        }
+
+        .demande-actions .btn-refuse {
+            background: var(--danger-glow);
+            border: 1px solid rgba(239, 68, 68, 0.15);
+            border-radius: 12px;
+            padding: 14px 12px;
+            color: var(--danger);
+            font-size: 15px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .demande-actions .btn-refuse:active {
+            transform: scale(0.96);
+            background: rgba(239, 68, 68, 0.25);
+        }
+
+        .demande-actions .btn-refuse .icon {
+            font-size: 18px;
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            border: 1px dashed rgba(255,255,255,0.04);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: var(--text-muted);
+            opacity: 0.3;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* POPUP */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 10, 25, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
+
+        .popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup-card {
+            background: var(--bg-card);
             border-radius: 28px;
-            padding: 14px 20px;
-            border: 1px solid rgba(245, 158, 11, 0.2);
+            max-width: 400px;
+            width: 100%;
+            padding: 28px 24px;
+            border: 1px solid rgba(34, 211, 238, 0.06);
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+            animation: popupIn 0.3s ease;
+        }
+
+        @keyframes popupIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .popup-header h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .popup-header h3 i {
+            color: var(--success);
+            margin-right: 8px;
+        }
+
+        .popup-close {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 4px 8px;
+            transition: var(--transition);
+        }
+
+        .popup-body {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .popup-body .highlight {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .popup-footer {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .popup-footer .btn-secondary {
+            background: transparent;
+            border: 1px solid #334155;
+            border-radius: var(--radius-xs);
+            padding: 10px 24px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .popup-footer .btn-secondary:active {
+            transform: scale(0.97);
+            background: rgba(255,255,255,0.04);
+        }
+
+        .popup-footer .btn-success {
+            background: var(--success);
+            border: none;
+            border-radius: var(--radius-xs);
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .popup-footer .btn-success:active {
+            transform: scale(0.97);
+            background: var(--success-hover);
+        }
+
+        .popup-footer .btn-danger {
+            background: var(--danger);
+            border: none;
+            border-radius: var(--radius-xs);
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .popup-footer .btn-danger:active {
+            transform: scale(0.97);
+            background: var(--danger-hover);
+        }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            padding: 12px 24px;
+            border-radius: var(--radius-xs);
+            border: 1px solid rgba(34, 211, 238, 0.12);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.35s ease;
+            z-index: 2000;
+            max-width: 90%;
+        }
+
+        .toast i {
+            color: var(--success);
+            font-size: 18px;
+        }
+
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 400px) {
+            .demande-actions {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .demande-actions .btn-confirm,
+            .demande-actions .btn-refuse {
+                font-size: 14px;
+                padding: 12px 10px;
+            }
+            .demande-card .details {
+                flex-direction: column;
+                gap: 8px;
+            }
         }
     </style>
 </head>
-<body class="bg-dark" style="background-color: #1e293b !important;">
+<body>
+    <div class="app">
 
-    <!-- Conteneur principal mobile-first -->
-    <div class="container-fluid px-0" style="max-width: 500px; margin: 0 auto; background-color: #1e293b; min-height: 100vh;">
-        
-        <!-- Header -->
-        <div class="header-page px-4 py-4">
-            <div class="d-flex align-items-center justify-content-between">
-                <a href="{{ url_for('index') }}" class="btn-back">
-                    <i class="fas fa-arrow-left"></i> Retour
-                </a>
-                <div class="badge-count">
-                    <i class="fas fa-hourglass-half me-1"></i> {{ demandes|length }} en attente
-                </div>
+        <!-- ============================================ -->
+        <!-- HEADER -->
+        <!-- ============================================ -->
+        <header class="header">
+            <div class="header-left">
+                <a href="{{ url_for('index') }}" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+                <h1 class="title-sm">Paiements en attente</h1>
             </div>
-        </div>
-
-        <div class="px-4 py-3">
-            
-            <!-- Titre de la page -->
-            <div class="d-flex align-items-center gap-3 mb-4">
-                <div class="rounded-circle p-3" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%);">
-                    <i class="fas fa-clock text-warning fs-3"></i>
-                </div>
-                <div>
-                    <h1 class="text-white fw-bold mb-0" style="font-size: 24px;">Paiements en attente</h1>
-                    <p class="text-secondary small mb-0">Demandes à traiter</p>
-                </div>
+            <div class="header-right">
+                <span class="badge-count">{{ demandes|length }}</span>
             </div>
+        </header>
 
-            <!-- Vérification si la liste est vide -->
+        <!-- ============================================ -->
+        <!-- CONTENT -->
+        <!-- ============================================ -->
+        <main>
+
             {% if demandes|length == 0 %}
             <div class="empty-state">
-                <i class="fas fa-check-circle text-success fs-1 mb-3 d-block"></i>
-                <h5 class="text-secondary mb-2">Aucune demande en attente</h5>
-                <p class="text-secondary small">Toutes les demandes ont été traitées</p>
-                <a href="{{ url_for('index') }}" class="btn-back mt-3">
+                <i class="fas fa-check-circle"></i>
+                <h3>Aucune demande en attente</h3>
+                <p>Toutes les demandes ont été traitées</p>
+                <a href="{{ url_for('index') }}" class="btn-primary" style="margin-top:16px;display:inline-flex;">
                     <i class="fas fa-home"></i> Retour à l'accueil
                 </a>
             </div>
             {% else %}
-            
-            <!-- Total des paiements en attente -->
-            <div class="total-pending mb-4">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <small class="text-secondary">Total à encaisser</small>
-                        <div class="amount-warning">
-                            {% set total = demandes|sum(attribute='montant') %}
-                            {{ total }} Ouguiya
-                        </div>
-                    </div>
-                    <div class="bg-warning bg-opacity-10 rounded-circle p-2">
-                        <i class="fas fa-money-bill-wave text-warning fs-4"></i>
-                    </div>
+
+            <!-- Total -->
+            <div class="total-box">
+                <div class="info">
+                    <span>Total à encaisser</span>
+                    <strong>{{ demandes|sum(attribute='montant') }} UM</strong>
                 </div>
+                <div class="icon"><i class="fas fa-clock"></i></div>
             </div>
 
-            <!-- Liste des demandes en attente (cards) -->
-            <div class="d-flex flex-column gap-3">
-                {% for demande in demandes %}
-                <div class="payment-card p-3">
-                    <!-- En-tête : client et méthode -->
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="fas fa-user-circle text-warning fs-5"></i>
-                            <h5 class="text-white fw-semibold mb-0">{{ demande.nom }}</h5>
-                        </div>
-                        <span class="method-badge">
-                            <i class="fas fa-university"></i> {{ demande.method }}
-                        </span>
-                    </div>
+            <!-- Liste des demandes -->
+            {% for demande in demandes %}
+            <div class="demande-card">
 
-                    <!-- Description / Achat -->
-                    <div class="mb-2">
-                        <p class="text-secondary small mb-1">
-                            <i class="fas fa-shopping-basket me-1"></i> {{ demande.achat }}
-                        </p>
-                    </div>
-
-                    <!-- Montant -->
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <small class="text-secondary">Montant</small>
-                                <div class="amount-warning">{{ demande.montant }} Ouguiya</div>
-                            </div>
-                            <div class="text-end">
-                                <small class="text-secondary">Date de la demande</small>
-                                <div class="text-white small">
-                                    <i class="fas fa-calendar-alt me-1"></i> {{ demande.date_demande }}
-                                </div>
-                            </div>
+                <!-- En-tête -->
+                <div class="header">
+                    <div class="client">
+                        <div class="avatar"><i class="fas fa-user"></i></div>
+                        <div>
+                            <span class="name">{{ demande.nom }}</span>
+                            <span class="sub">
+                                <i class="fas fa-shopping-basket"></i> {{ demande.achat }}
+                            </span>
                         </div>
                     </div>
+                    <span class="method-badge {% if demande.method == 'Espèces' %}cash{% else %}mobile{% endif %}">
+                        {% if demande.method == 'Espèces' %}
+                        <span class="app-icon">💵</span> Espèces
+                        {% else %}
+                        <span class="app-icon">📱</span> {{ demande.method }}
+                        {% endif %}
+                    </span>
+                </div>
 
-                    <!-- Actions : Confirmer et Refuser -->
-                    <div class="d-flex gap-2 mt-2">
-                        <a href="/confirmer/{{ demande.id_demande }}" class="btn-confirm flex-grow-1 justify-content-center">
-                            <i class="fas fa-check-circle"></i> Confirmer
-                        </a>
-                        <a href="/refuse/{{ demande.id_demande }}" class="btn-refuse flex-grow-1 justify-content-center">
-                            <i class="fas fa-times-circle"></i> Refuser
-                        </a>
+                <!-- Détails -->
+                <div class="details">
+                    <div class="item">
+                        <div class="label">Montant</div>
+                        <div class="value montant">{{ demande.montant }} UM</div>
+                    </div>
+                    <div class="item">
+                        <div class="label">Date</div>
+                        <div class="value date">{{ demande.date_demande }}</div>
                     </div>
                 </div>
-                {% endfor %}
+
+                <!-- Actions -->
+                <div class="demande-actions">
+                    <a href="/confirmer/{{ demande.id_demande }}" class="btn-confirm" onclick="return confirmPayment('{{ demande.nom }}', '{{ demande.montant }}')">
+                        <span class="icon">✓</span> Confirmer
+                    </a>
+                    <a href="/refuse/{{ demande.id_demande }}" class="btn-refuse" onclick="return refusePayment('{{ demande.nom }}', '{{ demande.montant }}')">
+                        <span class="icon">✕</span> Refuser
+                    </a>
+                </div>
+
             </div>
-            
+            {% endfor %}
+
             {% endif %}
 
-            <!-- Message informatif -->
-            <div class="text-center mt-4 pt-3">
-                <small class="text-secondary">
-                    <i class="fas fa-shield-alt me-1 text-warning"></i> 
-                    Les paiements confirmés sont automatiquement validés
-                </small>
-            </div>
-
-        </div>
+        </main>
 
         <!-- Footer -->
-        <div class="text-center text-secondary small py-4 mt-3 border-top border-secondary" style="border-color: rgba(51, 65, 85, 0.5) !important;">
-            <i class="fas fa-lock me-1"></i> Paiements sécurisés 
-            <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i> 
-            AppDette
-            <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i> 
-            
-        </div>
+        <footer class="footer">
+            <i class="fas fa-lock"></i> Sécurisé <span class="dot">•</span> NexusDette v2.0
+        </footer>
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- ============================================ -->
+    <!-- POPUP DE CONFIRMATION -->
+    <!-- ============================================ -->
+    <div id="confirmPopup" class="popup-overlay">
+        <div class="popup-card">
+            <div class="popup-header">
+                <h3><i class="fas fa-check-circle"></i> Confirmer le paiement</h3>
+                <button class="popup-close" onclick="closeConfirmPopup()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="popup-body" id="confirmBody">
+                <!-- Rempli par JS -->
+            </div>
+            <div class="popup-footer">
+                <button class="btn-secondary" onclick="closeConfirmPopup()">Annuler</button>
+                <button class="btn-success" id="confirmActionBtn">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- POPUP DE REFUS -->
+    <!-- ============================================ -->
+    <div id="refusePopup" class="popup-overlay">
+        <div class="popup-card">
+            <div class="popup-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> Refuser le paiement</h3>
+                <button class="popup-close" onclick="closeRefusePopup()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="popup-body" id="refuseBody">
+                <!-- Rempli par JS -->
+            </div>
+            <div class="popup-footer">
+                <button class="btn-secondary" onclick="closeRefusePopup()">Annuler</button>
+                <button class="btn-danger" id="refuseActionBtn">Refuser</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- TOAST -->
+    <!-- ============================================ -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Message</span>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SCRIPTS -->
+    <!-- ============================================ -->
+    <script>
+        // ============================================
+        // POPUP CONFIRMATION
+        // ============================================
+        let confirmUrl = '';
+        let refuseUrl = '';
+
+        function confirmPayment(nom, montant) {
+            event.preventDefault();
+            const url = event.target.href || event.currentTarget.href;
+            confirmUrl = url;
+            
+            const body = document.getElementById('confirmBody');
+            if (body) {
+                body.innerHTML = `
+                    <p>Voulez-vous confirmer le paiement de <span class="highlight">${montant} UM</span> pour <span class="highlight">${nom}</span> ?</p>
+                    <p style="color:var(--text-muted);font-size:14px;margin-top:8px;">
+                        <i class="fas fa-info-circle"></i> Le solde de la dette sera mis à jour automatiquement.
+                    </p>
+                `;
+            }
+            
+            document.getElementById('confirmPopup').classList.add('active');
+            return false;
+        }
+
+        function closeConfirmPopup() {
+            document.getElementById('confirmPopup').classList.remove('active');
+            confirmUrl = '';
+        }
+
+        // Confirmer via popup
+        document.addEventListener('DOMContentLoaded', function() {
+            const confirmBtn = document.getElementById('confirmActionBtn');
+            if (confirmBtn) {
+                confirmBtn.addEventListener('click', function() {
+                    if (confirmUrl) {
+                        window.location.href = confirmUrl;
+                    }
+                });
+            }
+
+            // Fermer en cliquant à l'extérieur
+            const confirmOverlay = document.getElementById('confirmPopup');
+            if (confirmOverlay) {
+                confirmOverlay.addEventListener('click', function(e) {
+                    if (e.target === this) closeConfirmPopup();
+                });
+            }
+        });
+
+        // ============================================
+        // POPUP REFUS
+        // ============================================
+        function refusePayment(nom, montant) {
+            event.preventDefault();
+            const url = event.target.href || event.currentTarget.href;
+            refuseUrl = url;
+            
+            const body = document.getElementById('refuseBody');
+            if (body) {
+                body.innerHTML = `
+                    <p>Voulez-vous refuser le paiement de <span class="highlight">${montant} UM</span> pour <span class="highlight">${nom}</span> ?</p>
+                    <p style="color:#f87171;font-size:14px;margin-top:8px;">
+                        <i class="fas fa-exclamation-triangle"></i> Cette action est irréversible.
+                    </p>
+                `;
+            }
+            
+            document.getElementById('refusePopup').classList.add('active');
+            return false;
+        }
+
+        function closeRefusePopup() {
+            document.getElementById('refusePopup').classList.remove('active');
+            refuseUrl = '';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const refuseBtn = document.getElementById('refuseActionBtn');
+            if (refuseBtn) {
+                refuseBtn.addEventListener('click', function() {
+                    if (refuseUrl) {
+                        window.location.href = refuseUrl;
+                    }
+                });
+            }
+
+            const refuseOverlay = document.getElementById('refusePopup');
+            if (refuseOverlay) {
+                refuseOverlay.addEventListener('click', function(e) {
+                    if (e.target === this) closeRefusePopup();
+                });
+            }
+        });
+
+        // ============================================
+        // TOAST
+        // ============================================
+        let toastTimeout = null;
+
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            const msg = document.getElementById('toastMessage');
+            const icon = toast ? toast.querySelector('i') : null;
+            
+            if (!toast || !msg) return;
+            
+            if (toastTimeout) {
+                clearTimeout(toastTimeout);
+                toastTimeout = null;
+            }
+            
+            toast.className = 'toast';
+            if (type === 'error') toast.classList.add('error');
+            
+            msg.textContent = message;
+            
+            if (icon) {
+                if (type === 'error') icon.className = 'fas fa-exclamation-circle';
+                else icon.className = 'fas fa-check-circle';
+            }
+            
+            toast.classList.add('show');
+            
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+                toastTimeout = null;
+            }, 2500);
+        }
+
+        // ============================================
+        // FERMER LES POPUPS AVEC ESC
+        // ============================================
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeConfirmPopup();
+                closeRefusePopup();
+            }
+        });
+    </script>
+
 </body>
 </html>

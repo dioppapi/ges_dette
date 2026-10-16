@@ -1,0 +1,54 @@
+<!-- ============================================
+   POPUPS - Inclus dans toutes les pages
+   ============================================ -->
+
+<!-- Popup de Confirmation -->
+<div id="popupOverlay" class="popup-overlay">
+    <div class="popup-card">
+        <div class="popup-header">
+            <h3 id="popupTitle">Confirmation</h3>
+            <button class="popup-close" onclick="closePopup()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="popup-body" id="popupBody">
+            <!-- Contenu dynamique -->
+        </div>
+        <div class="popup-footer">
+            <button class="btn-secondary" onclick="closePopup()">Annuler</button>
+            <button class="btn-primary" id="popupAction">Confirmer</button>
+        </div>
+    </div>
+</div>
+
+<!-- Popup Copier -->
+<div id="popupCopy" class="popup-overlay">
+    <div class="popup-card popup-copy">
+        <div class="popup-header">
+            <h3><i class="fas fa-copy"></i> Copier la dette</h3>
+            <button class="popup-close" onclick="closePopupCopy()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="popup-body">
+            <p style="color:var(--text-secondary);font-size:14px;margin-bottom:12px;">
+                <i class="fas fa-info-circle"></i> Copiez les informations ci-dessous :
+            </p>
+            <div class="copy-box" id="copyContent">
+                <!-- Rempli par JavaScript -->
+            </div>
+            <button class="btn-copy-text" onclick="copyToClipboard()">
+                <i class="fas fa-copy"></i> Copier le texte
+            </button>
+        </div>
+        <div class="popup-footer">
+            <button class="btn-secondary" onclick="closePopupCopy()">Fermer</button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMessage">Message</span>
+</div>

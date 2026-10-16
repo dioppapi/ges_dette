@@ -3,243 +3,400 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Accueil | Gestion Dettes Premium</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Accueil | Gestion Dettes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
-        body {
-            background-color: #1e293b;
+        /* ============================================
+           INDEX - STYLES
+           ============================================ */
+
+        .home-header {
+            padding: 20px 0 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .card-hover {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+        .home-header h1 {
+            font-size: 26px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 30%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .card-hover:active {
-            transform: scale(0.97);
+
+        .home-header .badge-store {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--cyan);
+            background: var(--cyan-glow);
+            padding: 4px 12px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            -webkit-text-fill-color: var(--cyan);
         }
-        .icon-circle {
-            width: 48px;
-            height: 48px;
+
+        .home-header .avatar {
+            width: 44px;
+            height: 44px;
+            background: var(--cyan-glow);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 24px;
-            margin-bottom: 12px;
+            color: var(--cyan);
+            font-size: 20px;
         }
-        .grid-card {
-            min-height: 120px;
-            transition: all 0.2s ease;
+
+        /* STATS */
+        .stats-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin: 16px 0 20px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            padding: 14px 12px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .stat-card .number {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-card .label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .stat-card .number.warning { color: var(--warning); }
+        .stat-card .number.green { color: var(--success); }
+
+        /* SECTIONS */
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 0 4px;
+        }
+
+        .section-header .icon-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .section-header .icon-circle.cyan { background: var(--cyan-glow); color: var(--cyan); }
+        .section-header .icon-circle.yellow { background: var(--warning-glow); color: var(--warning); }
+        .section-header .icon-circle.green { background: var(--success-glow); color: var(--success); }
+        .section-header .icon-circle.purple { background: rgba(168, 85, 247, 0.12); color: #a855f7; }
+        .section-header .icon-circle.gray { background: rgba(148, 163, 184, 0.12); color: var(--text-secondary); }
+        .section-header .icon-circle.red { background: var(--danger-glow); color: var(--danger); }
+
+        .section-header h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .section-header .badge-count {
+            font-size: 11px;
+            background: var(--bg-card);
+            padding: 2px 10px;
+            border-radius: 20px;
+            color: var(--text-secondary);
+            margin-left: auto;
+        }
+
+        /* ACTION GROUP */
+        .action-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            padding: 14px 12px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-primary);
+            border: 1px solid rgba(255,255,255,0.03);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .action-btn:active {
+            transform: scale(0.96);
+            background: var(--bg-hover);
+        }
+
+        .action-btn .icon {
+            font-size: 20px;
+        }
+        .action-btn .icon.cyan { color: var(--cyan); }
+        .action-btn .icon.yellow { color: var(--warning); }
+        .action-btn .icon.green { color: var(--success); }
+        .action-btn .icon.purple { color: #a855f7; }
+        .action-btn .icon.gray { color: var(--text-secondary); }
+        .action-btn .icon.red { color: var(--danger); }
+
+        .action-btn .label {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .action-btn .sub {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        /* FULL WIDTH */
+        .action-full {
+            grid-column: 1 / -1;
+            flex-direction: row;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px;
+        }
+
+        /* DIVIDER */
+        .section-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.04);
+            margin: 4px 0 20px;
+        }
+
+        /* LOGOUT */
+        .logout-btn {
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            color: var(--text-primary);
+            border: 1px solid rgba(239, 68, 68, 0.1);
+            transition: var(--transition);
+            margin-top: 8px;
+        }
+
+        .logout-btn:active {
+            transform: scale(0.97);
+            background: #2d1a1a;
+        }
+
+        .logout-btn .icon { color: var(--danger); font-size: 18px; }
+        .logout-btn .text { flex: 1; }
+        .logout-btn .text strong { color: var(--danger); font-size: 14px; }
+        .logout-btn .text span { font-size: 12px; color: var(--text-secondary); }
+        .logout-btn .arrow { color: var(--danger); opacity: 0.4; }
+
+        /* RESPONSIVE */
+        @media (max-width: 400px) {
+            .stats-row { grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+            .stat-card .number { font-size: 18px; }
+            .action-btn .label { font-size: 12px; }
+            .home-header h1 { font-size: 22px; }
         }
     </style>
 </head>
-<body class="bg-secondary bg-opacity-10" style="background-color: #1e293b !important;">
+<body>
+    <div class="app">
 
-    <!-- Conteneur principal mobile-first -->
-    <div class="container-fluid px-0" style="max-width: 500px; margin: 0 auto; background-color: #1e293b; min-height: 100vh;">
-        
-        <!-- ========== HEADER "ACCUEIL" ========== -->
-        <div class="pt-4 pb-3 px-4" style="background-color: #1e293b;">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h1 class="display-6 fw-bold mb-0 text-white">Accueil</h1>
-                    <p class="text-info mb-0 small mt-1">
-                        <i class="fas fa-store me-1"></i> Magasin d'alimentation
-                    </p>
-                </div>
-                <div class="bg-info bg-opacity-25 rounded-circle p-2">
-                    <i class="fas fa-user-circle text-info fs-3"></i>
-                </div>
-            </div>
-            <div class="mt-3">
-                <span class="badge bg-info bg-opacity-25 text-info px-3 py-2 rounded-pill">
-                    <i class="fas fa-shield-alt me-1"></i> COMPTE PREMIUM
+        <!-- ============================================ -->
+        <!-- HEADER -->
+        <!-- ============================================ -->
+        <header class="home-header">
+            <div>
+                <h1>Accueil</h1>
+                <span class="badge-store">
+                    <i class="fas fa-store"></i> Magasin
                 </span>
             </div>
-        </div>
+            <div class="avatar">
+                <i class="fas fa-user"></i>
+            </div>
+        </header>
 
-        <!-- ========== MENU EN GRILLE 2 COLONNES ========== -->
-        <div class="px-3 py-4">
-            <div class="row g-3">
-                
-                <!-- LIGNE 1 : Ajouter Dette + Liste Dettes -->
-                <div class="col-6">
-                    <a href="{{ url_for('ajouter_dette') }}" class="text-decoration-none">
-                        <div class="card bg-dark text-white border-secondary rounded-4 shadow-sm grid-card card-hover h-100">
-                            <div class="card-body text-center py-3">
-                                <div class="icon-circle bg-info bg-opacity-10 mx-auto">
-                                    <i class="fas fa-file-invoice-dollar text-info fs-4"></i>
-                                </div>
-                                <h6 class="fw-semibold mb-0 mt-2">Ajouter Dette</h6>
-                                <small class="text-secondary">Crédit client</small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-6">
-                    <a href="{{ url_for('liste_dette') }}" class="text-decoration-none">
-                        <div class="card bg-dark text-white border-secondary rounded-4 shadow-sm grid-card card-hover h-100">
-                            <div class="card-body text-center py-3">
-                                <div class="icon-circle bg-info bg-opacity-10 mx-auto">
-                                    <i class="fas fa-receipt text-info fs-4"></i>
-                                </div>
-                                <h6 class="fw-semibold mb-0 mt-2">Liste Dettes</h6>
-                                <small class="text-secondary">Transactions</small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- LIGNE 2 : Ajouter Client + Liste Clients -->
-                <div class="col-6">
-                    <a href="{{ url_for('ajouter') }}" class="text-decoration-none">
-                        <div class="card bg-dark text-white border-secondary rounded-4 shadow-sm grid-card card-hover h-100">
-                            <div class="card-body text-center py-3">
-                                <div class="icon-circle bg-info bg-opacity-10 mx-auto">
-                                    <i class="fas fa-user-plus text-info fs-4"></i>
-                                </div>
-                                <h6 class="fw-semibold mb-0 mt-2">Ajouter Client</h6>
-                                <small class="text-secondary">Nouveau client</small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-6">
-                    <a href="{{ url_for('liste') }}" class="text-decoration-none">
-                        <div class="card bg-dark text-white border-secondary rounded-4 shadow-sm grid-card card-hover h-100">
-                            <div class="card-body text-center py-3">
-                                <div class="icon-circle bg-info bg-opacity-10 mx-auto">
-                                    <i class="fas fa-users text-info fs-4"></i>
-                                </div>
-                                <h6 class="fw-semibold mb-0 mt-2">Liste Clients</h6>
-                                <small class="text-secondary">Consulter</small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- LIGNE 3 : Ajouter Reste + Liste des Restes -->
-                <div class="col-6">
-                    <a href="{{ url_for('ajouter_avoir') }}" class="text-decoration-none">
-                        <div class="card bg-dark text-white border-secondary rounded-4 shadow-sm grid-card card-hover h-100">
-                            <div class="card-body text-center py-3">
-                                <div class="icon-circle bg-success bg-opacity-10 mx-auto">
-                                    <i class="fas fa-plus-circle text-success fs-4"></i>
-                                </div>
-                                <h6 class="fw-semibold mb-0 mt-2">Ajouter Reste</h6>
-                                <small class="text-secondary">Avoir client</small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-6">
-                    <a href="{{ url_for('liste_avoirs') }}" class="text-decoration-none">
-                        <div class="card bg-dark text-white border-secondary rounded-4 shadow-sm grid-card card-hover h-100">
-                            <div class="card-body text-center py-3">
-                                <div class="icon-circle bg-success bg-opacity-10 mx-auto">
-                                    <i class="fas fa-coins text-success fs-4"></i>
-                                </div>
-                                <h6 class="fw-semibold mb-0 mt-2">Liste des Restes</h6>
-                                <small class="text-secondary">Avoirs clients</small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- LIGNE 4 : Paiement en attente + Demandes refusées -->
-                <div class="col-6">
-                    <a href="{{ url_for('paiement_en_attente') }}" class="text-decoration-none">
-                        <div class="card bg-dark text-white border-secondary rounded-4 shadow-sm grid-card card-hover h-100">
-                            <div class="card-body text-center py-3">
-                                <div class="icon-circle bg-warning bg-opacity-10 mx-auto">
-                                    <i class="fas fa-hourglass-half text-warning fs-4"></i>
-                                </div>
-                                <h6 class="fw-semibold mb-0 mt-2">Paiement en attente</h6>
-                                <small class="text-secondary">À encaisser</small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-6">
-                    <a href="{{ url_for('demandes_refuses') }}" class="text-decoration-none">
-                        <div class="card bg-dark text-white border-secondary rounded-4 shadow-sm grid-card card-hover h-100">
-                            <div class="card-body text-center py-3">
-                                <div class="icon-circle bg-danger bg-opacity-10 mx-auto">
-                                    <i class="fas fa-ban text-danger fs-4"></i>
-                                </div>
-                                <h6 class="fw-semibold mb-0 mt-2">Demandes refusées</h6>
-                                <small class="text-secondary">Rejetés</small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- LIGNE 5 : Archive + Recherche -->
-                <div class="col-6">
-                    <a href="{{ url_for('archive') }}" class="text-decoration-none">
-                        <div class="card bg-dark text-white border-secondary rounded-4 shadow-sm grid-card card-hover h-100">
-                            <div class="card-body text-center py-3">
-                                <div class="icon-circle bg-success bg-opacity-10 mx-auto">
-                                    <i class="fas fa-archive text-success fs-4"></i>
-                                </div>
-                                <h6 class="fw-semibold mb-0 mt-2">Archive</h6>
-                                <small class="text-secondary">Historique</small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-6">
-                    <a href="{{ url_for('recherche') }}" class="text-decoration-none">
-                        <div class="card bg-dark text-white border-secondary rounded-4 shadow-sm grid-card card-hover h-100">
-                            <div class="card-body text-center py-3">
-                                <div class="icon-circle bg-info bg-opacity-10 mx-auto">
-                                    <i class="fas fa-search text-info fs-4"></i>
-                                </div>
-                                <h6 class="fw-semibold mb-0 mt-2">Recherche</h6>
-                                <small class="text-secondary">Chercher</small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
+        <!-- ============================================ -->
+        <!-- STATISTIQUES -->
+        <!-- ============================================ -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="number warning">{{ dettes_attente|default(0) }}</div>
+                <div class="label">Dettes en attente</div>
+            </div>
+            <div class="stat-card">
+                <div class="number green">{{ dettes_soldees|default(0) }}</div>
+                <div class="label">Dettes soldées</div>
+            </div>
+            <div class="stat-card">
+                <div class="number cyan">{{ clients|default(0) }}</div>
+                <div class="label">Clients</div>
             </div>
         </div>
 
-        <!-- ========== DÉCONNEXION (en bas) ========== -->
-        <div class="px-3 pb-4">
-            <a href="{{ url_for('logout') }}" class="text-decoration-none">
-                <div class="card bg-dark text-white border-danger rounded-4 shadow-sm card-hover">
-                    <div class="card-body d-flex align-items-center justify-content-between py-3">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="bg-danger bg-opacity-10 rounded-circle p-3">
-                                <i class="fas fa-sign-out-alt text-danger fs-5"></i>
-                            </div>
-                            <div>
-                                <h5 class="fw-semibold mb-0 text-danger">Déconnexion</h5>
-                                <small class="text-secondary">Quitter l'application</small>
-                            </div>
-                        </div>
-                        <i class="fas fa-chevron-right text-danger opacity-50"></i>
-                    </div>
-                </div>
-            </a>
+        <!-- ============================================ -->
+        <!-- SECTION : CLIENTS -->
+        <!-- ============================================ -->
+        <div class="section">
+            <div class="section-header">
+                <div class="icon-circle cyan"><i class="fas fa-users"></i></div>
+                <h2>Clients</h2>
+            </div>
+            <div class="action-group">
+                <a href="{{ url_for('ajouter') }}" class="action-btn">
+                    <i class="fas fa-user-plus icon cyan"></i>
+                    <span class="label">Nouveau client</span>
+                </a>
+                <a href="{{ url_for('liste') }}" class="action-btn">
+                    <i class="fas fa-list-ul icon cyan"></i>
+                    <span class="label">Liste des clients</span>
+                </a>
+            </div>
         </div>
 
-        <!-- Footer -->
-        <div class="text-center text-secondary small py-3 border-top border-secondary mt-2">
-            <i class="fas fa-lock me-1"></i> Paiements sécurisés 
-            <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i> 
-            AppDette
-            <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i> 
-            
+        <!-- ============================================ -->
+        <!-- SECTION : DETTES -->
+        <!-- ============================================ -->
+        <div class="section">
+            <div class="section-header">
+                <div class="icon-circle yellow"><i class="fas fa-file-invoice-dollar"></i></div>
+                <h2>Dettes</h2>
+                <span class="badge-count">{{ dettes_attente|default(0) }} en attente</span>
+            </div>
+            <div class="action-group">
+                <a href="{{ url_for('ajouter_dette') }}" class="action-btn">
+                    <i class="fas fa-plus-circle icon yellow"></i>
+                    <span class="label">Nouvelle dette</span>
+                </a>
+                <a href="{{ url_for('liste_dette') }}" class="action-btn">
+                    <i class="fas fa-receipt icon yellow"></i>
+                    <span class="label">Liste des dettes</span>
+                </a>
+            </div>
         </div>
+
+        <!-- ============================================ -->
+        <!-- SECTION : PAIEMENTS -->
+        <!-- ============================================ -->
+        <div class="section">
+            <div class="section-header">
+                <div class="icon-circle green"><i class="fas fa-hand-holding-usd"></i></div>
+                <h2>Paiements</h2>
+            </div>
+            <div class="action-group">
+                <a href="{{ url_for('paiement_en_attente') }}" class="action-btn">
+                    <i class="fas fa-clock icon green"></i>
+                    <span class="label">En attente</span>
+                    <span class="sub">À vérifier</span>
+                </a>
+                <a href="{{ url_for('demandes_refuses') }}" class="action-btn">
+                    <i class="fas fa-ban icon red"></i>
+                    <span class="label">Refusés</span>
+                    <span class="sub">Paiements rejetés</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SECTION : MONNAIE À RENDRE -->
+        <!-- ============================================ -->
+        <div class="section">
+            <div class="section-header">
+                <div class="icon-circle purple"><i class="fas fa-coins"></i></div>
+                <h2>Monnaie à rendre</h2>
+            </div>
+            <div class="action-group">
+                <a href="{{ url_for('ajouter_avoir') }}" class="action-btn">
+                    <i class="fas fa-plus-circle icon purple"></i>
+                    <span class="label">Ajouter</span>
+                    <span class="sub">Montant à rendre</span>
+                </a>
+                <a href="{{ url_for('liste_avoirs') }}" class="action-btn">
+                    <i class="fas fa-list-ul icon purple"></i>
+                    <span class="label">Liste</span>
+                    <span class="sub">Montants à rendre</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SECTION : AUTRES -->
+        <!-- ============================================ -->
+        <div class="section">
+            <div class="section-header">
+                <div class="icon-circle gray"><i class="fas fa-archive"></i></div>
+                <h2>Autres</h2>
+            </div>
+            <div class="action-group">
+                <a href="{{ url_for('archive') }}" class="action-btn">
+                    <i class="fas fa-archive icon gray"></i>
+                    <span class="label">Archives</span>
+                    <span class="sub">Dettes soldées</span>
+                </a>
+                <a href="{{ url_for('recherche') }}" class="action-btn">
+                    <i class="fas fa-search icon gray"></i>
+                    <span class="label">Recherche</span>
+                    <span class="sub">Clients / Dettes</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- ============================================ -->
+        <!-- DÉCONNEXION -->
+        <!-- ============================================ -->
+        <a href="{{ url_for('logout') }}" class="logout-btn">
+            <div class="icon"><i class="fas fa-sign-out-alt"></i></div>
+            <div class="text">
+                <strong>Déconnexion</strong>
+                <span>Quitter l'application</span>
+            </div>
+            <div class="arrow"><i class="fas fa-chevron-right"></i></div>
+        </a>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <i class="fas fa-lock"></i> Sécurisé <span class="dot">•</span> NexusDette v2.0
+        </footer>
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- Toast -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Message</span>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>

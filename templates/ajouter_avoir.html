@@ -1,50 +1,100 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Ajouter un reste | Gestion Dettes Premium</title>
+    <title>Ajouter une monnaie à rendre | Gestion Dettes Premium</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             background-color: #1e293b;
         }
+
+        .header-page {
+            background-color: #0f172a;
+            border-bottom: 1px solid rgba(34, 211, 238, 0.15);
+        }
+
         .form-card {
             background-color: #0f172a;
-            border-radius: 32px;
-            border: 1px solid rgba(34, 211, 238, 0.15);
+            border-radius: 28px;
+            border: 1px solid rgba(34, 211, 238, 0.1);
+            padding: 24px 20px;
         }
-        .form-label-custom {
+
+        .form-card .icon-circle {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(34, 211, 238, 0.05) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 28px;
+            color: #22d3ee;
+        }
+
+        .form-card h2 {
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            color: #f1f5f9;
+        }
+
+        .form-card .subtitle {
+            text-align: center;
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
             color: #94a3b8;
             font-size: 13px;
             font-weight: 500;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             margin-left: 4px;
         }
-        .form-control-custom, .form-select-custom {
-            background-color: #1e293b;
+
+        .form-label i {
+            color: #22d3ee;
+            margin-right: 6px;
+        }
+
+        .form-control,
+        .form-select {
+            width: 100%;
+            padding: 14px 18px;
+            background: #1e293b;
             border: 1px solid #334155;
             border-radius: 28px;
-            padding: 14px 18px;
-            color: white;
-            font-size: 16px;
-            width: 100%;
+            color: #f1f5f9;
+            font-size: 15px;
             transition: all 0.2s;
-        }
-        .form-control-custom:focus, .form-select-custom:focus {
             outline: none;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
             border-color: #22d3ee;
             box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.2);
-            background-color: #1e293b;
+            background: #1e293b;
         }
-        .form-control-custom::placeholder {
+
+        .form-control::placeholder {
             color: #64748b;
         }
-        .form-select-custom option {
-            background-color: #0f172a;
-            color: white;
+
+        .form-select option {
+            background: #0f172a;
+            color: #f1f5f9;
         }
+
         .btn-submit {
             background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
             border: none;
@@ -55,10 +105,16 @@
             color: #0f172a;
             transition: all 0.2s;
             width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
+
         .btn-submit:active {
             transform: scale(0.97);
         }
+
         .btn-back {
             background-color: transparent;
             border: 1px solid #334155;
@@ -73,69 +129,130 @@
             align-items: center;
             gap: 8px;
         }
+
         .btn-back:active {
             transform: scale(0.97);
             background-color: rgba(34, 211, 238, 0.1);
             border-color: #22d3ee;
             color: #22d3ee;
         }
-        .icon-circle {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(34, 211, 238, 0.05) 100%);
-            border-radius: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px auto;
-        }
-        .error-alert {
-            background-color: rgba(220, 38, 38, 0.15);
-            border: 1px solid rgba(220, 38, 38, 0.3);
-            border-radius: 20px;
-            color: #f87171;
-            font-size: 14px;
-            padding: 12px 16px;
-        }
-        .info-message {
-            background-color: rgba(34, 211, 238, 0.08);
+
+        .form-info {
+            background: rgba(34, 211, 238, 0.08);
             border-radius: 20px;
             padding: 12px 16px;
             font-size: 12px;
             color: #94a3b8;
             text-align: center;
+            margin-top: 16px;
+            border: 1px solid rgba(34, 211, 238, 0.06);
+        }
+
+        .form-info i {
+            color: #22d3ee;
+            margin-right: 6px;
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 20px;
+            padding: 12px 16px;
+            color: #f87171;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .form-hint {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 6px;
+            margin-left: 4px;
+        }
+
+        .form-hint i {
+            margin-right: 4px;
+            color: #22d3ee;
+        }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: #0f172a;
+            color: #f1f5f9;
+            padding: 12px 24px;
+            border-radius: 30px;
+            border: 1px solid rgba(34, 211, 238, 0.12);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.35s ease;
+            z-index: 2000;
+            max-width: 90%;
+        }
+
+        .toast i {
+            color: #22d3ee;
+            font-size: 18px;
+        }
+
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media (max-width: 400px) {
+            .form-card {
+                padding: 20px 16px;
+            }
         }
     </style>
 </head>
+
 <body class="bg-dark" style="background-color: #1e293b !important;">
 
     <!-- Conteneur principal mobile-first -->
-    <div class="container-fluid px-0" style="max-width: 500px; margin: 0 auto; background-color: #1e293b; min-height: 100vh;">
-        
-        <div class="px-4 py-4">
-            
-            <!-- Bouton retour -->
-            <div class="mb-3">
+    <div class="container-fluid px-0"
+        style="max-width: 500px; margin: 0 auto; background-color: #1e293b; min-height: 100vh;">
+
+        <!-- Header -->
+        <div class="header-page px-4 py-4">
+            <div class="d-flex align-items-center">
                 <a href="{{ url_for('index') }}" class="btn-back">
                     <i class="fas fa-arrow-left"></i> Retour
                 </a>
             </div>
+        </div>
+
+        <div class="px-4 py-3">
 
             <!-- Carte formulaire -->
-            <div class="form-card p-4 shadow-lg mt-2">
-                
+            <div class="form-card">
+
                 <!-- Icône et titre -->
-                <div class="icon-circle mx-auto">
-                    <i class="fas fa-hand-holding-usd text-success fs-1"></i>
+                <div class="icon-circle">
+                    <i class="fas fa-coins"></i>
                 </div>
-                <h2 class="text-white fw-bold text-center mb-1" style="font-size: 24px;">Ajouter un reste</h2>
-                <p class="text-secondary text-center small mb-4">Créer un avoir / crédit client</p>
+                <h2>Ajouter une monnaie à rendre</h2>
+                <p class="subtitle">Enregistrer un montant à rendre au client</p>
 
                 <!-- Affichage erreur -->
                 {% if erreur %}
-                <div class="error-alert mb-4 d-flex align-items-center gap-2">
+                <div class="alert-error">
                     <i class="fas fa-exclamation-triangle"></i>
-                    <span>{{ erreur }}</span>
+                    {{ erreur }}
                 </div>
                 {% endif %}
 
@@ -143,62 +260,169 @@
                 <form method="POST">
                     <!-- Sélection client -->
                     <div class="mb-4">
-                        <label class="form-label-custom">
-                            <i class="fas fa-user me-1 text-info"></i> Client
-                        </label>
-                        <select name="id_client" class="form-select-custom" required>
-                            <option disabled selected>📋 Sélectionnez un client</option>
+                        <label class="form-label"><i class="fas fa-user"></i> Client</label>
+                        <select name="id_client" class="form-select" required id="clientSelect"
+                            style="background-color:#1e293b !important;color:#f1f5f9 !important;">
+                            <option value="" disabled selected style="background-color:#0f172a;color:#f1f5f9;">📋
+                                Sélectionnez un client</option>
                             {% for c in clients %}
-                            <option value="{{ c.id_client }}">{{ c.nom }}</option>
+                            <option value="{{ c.id_client }}" style="background-color:#0f172a;color:#f1f5f9;">{{ c.nom
+                                }}</option>
                             {% endfor %}
                         </select>
+                        <div id="clientError" class="text-danger small mt-1" style="display:none;">
+                            <i class="fas fa-exclamation-circle"></i> Veuillez sélectionner un client.
+                        </div>
                     </div>
 
                     <!-- Montant -->
                     <div class="mb-4">
-                        <label class="form-label-custom">
-                            <i class="fas fa-coins me-1 text-info"></i> Montant (UM)
-                        </label>
-                        <input type="number" step="0.01" min="1" name="montant" class="form-control-custom" 
-                               placeholder="Ex: 5000" required>
+                        <label class="form-label"><i class="fas fa-coins"></i> Montant (UM)</label>
+                        <input type="number" step="0.01" min="1" name="montant" class="form-control"
+                            placeholder="montant" required
+                            style="background-color:#1e293b !important;color:#f1f5f9 !important;caret-color:#22d3ee;">
+                        <div class="form-hint">
+                            <i class="fas fa-info-circle"></i> Montant que le commerçant doit rendre au client
+                        </div>
                     </div>
 
                     <!-- Description -->
                     <div class="mb-4">
-                        <label class="form-label-custom">
-                            <i class="fas fa-pen me-1 text-info"></i> Description
-                        </label>
-                        <input type="text" name="description" class="form-control-custom" 
-                               placeholder="Ex: Remboursement anticipé, Dépôt, etc.">
+                        <label class="form-label"><i class="fas fa-pen"></i> Description</label>
+                        <input type="text"  name="montant" class="form-control" inputmode="numeric"
+                            placeholder="description" >
                     </div>
 
                     <!-- Bouton ajouter -->
-                    <button type="submit" class="btn-submit mt-2">
-                        <i class="fas fa-save me-2"></i> Ajouter le reste
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-save"></i> Ajouter la monnaie à rendre
                     </button>
                 </form>
 
                 <!-- Message informatif -->
-                <div class="info-message mt-4">
-                    <i class="fas fa-info-circle me-1 text-info"></i>
-                    Le reste (avoir) pourra être utilisé pour payer de futures dettes
+                <div class="form-info">
+                    <i class="fas fa-info-circle"></i>
+                    Ce montant sera disponible pour être utilisé lors d'un futur achat
                 </div>
             </div>
 
-            <!-- Footer -->
-            <div class="text-center text-secondary small py-4 mt-4">
-                <i class="fas fa-lock me-1"></i> Paiements sécurisés 
-                <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i> 
-                AppDette
-                <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i> 
-                
+            <!-- Message supplémentaire -->
+            <div class="text-center mt-4">
+                <small class="text-secondary">
+                    <i class="fas fa-lightbulb me-1 text-info"></i>
+                    Exemple : Client donne 200 UM pour un achat de 100 UM, 100 UM sont à rendre
+                </small>
             </div>
 
         </div>
 
+        <!-- Footer -->
+        <div class="text-center text-secondary small py-4 mt-3 border-top border-secondary"
+            style="border-color: rgba(51, 65, 85, 0.5) !important;">
+            <i class="fas fa-lock me-1"></i> Paiements sécurisés
+            <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i>
+            AppDette
+            <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i>
+            v2.0
+        </div>
+
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- ============================================ -->
+    <!-- TOAST -->
+    <!-- ============================================ -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Message</span>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SCRIPTS -->
+    <!-- ============================================ -->
+    <script>
+        // ============================================
+        // TOAST
+        // ============================================
+        let toastTimeout = null;
+
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            const msg = document.getElementById('toastMessage');
+            const icon = toast ? toast.querySelector('i') : null;
+
+            if (!toast || !msg) return;
+
+            if (toastTimeout) {
+                clearTimeout(toastTimeout);
+                toastTimeout = null;
+            }
+
+            toast.className = 'toast';
+            if (type === 'error') toast.classList.add('error');
+
+            msg.textContent = message;
+
+            if (icon) {
+                if (type === 'error') icon.className = 'fas fa-exclamation-circle';
+                else icon.className = 'fas fa-check-circle';
+            }
+
+            toast.classList.add('show');
+
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+                toastTimeout = null;
+            }, 2500);
+        }
+
+        // ============================================
+        // VALIDATION DU FORMULAIRE
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('form');
+            const clientSelect = document.getElementById('clientSelect');
+            const clientError = document.getElementById('clientError');
+            const montantInput = document.querySelector('input[name="montant"]');
+
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    let hasError = false;
+
+                    // Vérifier client
+                    if (!clientSelect || !clientSelect.value) {
+                        clientError.style.display = 'block';
+                        clientSelect.style.borderColor = '#ef4444';
+                        hasError = true;
+                    } else {
+                        clientError.style.display = 'none';
+                        clientSelect.style.borderColor = '';
+                    }
+
+                    // Vérifier montant
+                    const montant = parseFloat(montantInput?.value);
+                    if (!montant || montant <= 0) {
+                        showToast('❌ Veuillez saisir un montant valide', 'error');
+                        hasError = true;
+                    }
+
+                    if (hasError) {
+                        e.preventDefault();
+                    }
+                });
+
+                // Réinitialiser l'erreur sur changement
+                if (clientSelect) {
+                    clientSelect.addEventListener('change', function () {
+                        if (this.value) {
+                            clientError.style.display = 'none';
+                            this.style.borderColor = '';
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+
 </body>
+
 </html>

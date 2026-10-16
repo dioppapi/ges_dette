@@ -1,0 +1,55 @@
+/* ============================================
+   PAGE ACCUEIL (HOME)
+   ============================================ */
+
+/* Grille */
+.grid-menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0 20px;
+}
+
+/* Logout */
+.logout-section {
+    margin: 16px 0 12px;
+}
+
+.logout-btn {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    color: var(--text-primary);
+    border: 1px solid rgba(239, 68, 68, 0.1);
+    transition: var(--transition);
+}
+
+.logout-btn:active {
+    transform: scale(0.97);
+    background: #2d1a1a;
+}
+
+.logout-btn .icon {
+    color: var(--danger);
+    font-size: 18px;
+}
+
+.logout-btn .text strong {
+    color: var(--danger);
+    font-size: 14px;
+}
+
+.logout-btn .text span {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.logout-btn .arrow {
+    margin-left: auto;
+    color: var(--danger);
+    opacity: 0.4;
+}

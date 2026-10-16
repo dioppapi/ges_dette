@@ -1,0 +1,56 @@
+/* ============================================
+   PAGE LOGIN
+   ============================================ */
+
+.login-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.login-wrapper .form-card {
+    max-width: 400px;
+    width: 100%;
+    padding: 32px 28px;
+}
+
+.login-wrapper .form-card .icon-circle {
+    width: 64px;
+    height: 64px;
+    background: var(--accent-glow);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+    font-size: 28px;
+    color: var(--accent);
+}
+
+.login-wrapper .form-card h2 {
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.login-wrapper .form-card .subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+}
+
+.login-wrapper .form-card .footer {
+    border: none;
+    margin-top: 20px;
+    padding: 0;
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+    .login-wrapper .form-card {
+        padding: 24px 18px;
+    }
+}

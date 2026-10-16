@@ -1,0 +1,51 @@
+/* ============================================
+   TOAST (Notifications)
+   ============================================ */
+
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    padding: 12px 24px;
+    border-radius: var(--radius-xs);
+    border: 1px solid rgba(34, 211, 238, 0.12);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.35s ease;
+    z-index: 2000;
+    max-width: 90%;
+}
+
+.toast i {
+    color: var(--accent);
+    font-size: 18px;
+}
+
+.toast.success i {
+    color: var(--success);
+}
+
+.toast.error i {
+    color: var(--danger);
+}
+
+.toast.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.toast.hide {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) translateY(20px);
+}

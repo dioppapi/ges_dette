@@ -3,36 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Liste des clients | Gestion Dettes Premium</title>
+    <title>Liste des clients | Gestion Dettes</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
-        body {
-            background-color: #1e293b;
-        }
+        body { background-color: #1e293b; }
         .header-page {
             background-color: #0f172a;
             border-bottom: 1px solid rgba(34, 211, 238, 0.15);
-        }
-        .client-card {
-            background-color: #0f172a;
-            border-radius: 24px;
-            border: 1px solid rgba(34, 211, 238, 0.1);
-            transition: all 0.2s ease;
-        }
-        .client-card:active {
-            transform: scale(0.98);
-            background-color: #1e293b;
-            border-color: rgba(34, 211, 238, 0.3);
-        }
-        .client-avatar {
-            width: 55px;
-            height: 55px;
-            background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(34, 211, 238, 0.05) 100%);
-            border-radius: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 16px 20px;
         }
         .btn-back {
             background-color: transparent;
@@ -54,13 +34,153 @@
             border-color: #22d3ee;
             color: #22d3ee;
         }
-        .empty-state {
+        .client-card {
             background-color: #0f172a;
-            border-radius: 32px;
-            border: 1px dashed #334155;
-            padding: 48px 20px;
-            text-align: center;
+            border-radius: 24px;
+            border: 1px solid rgba(34, 211, 238, 0.1);
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
         }
+        .client-card .client-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .client-card .avatar {
+            width: 48px;
+            height: 48px;
+            background: rgba(34, 211, 238, 0.12);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #22d3ee;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .client-card .name {
+            font-weight: 600;
+            font-size: 16px;
+            color: #f1f5f9;
+            display: block;
+        }
+        .client-card .tel {
+            font-size: 13px;
+            color: #94a3b8;
+            display: block;
+            margin-top: 2px;
+        }
+        .client-card .tel i {
+            margin-right: 4px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        /* Stats */
+        .client-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .stat-item {
+            text-align: center;
+            padding: 8px 4px;
+            border-radius: 10px;
+            background: #1e293b;
+        }
+        .stat-item .number {
+            font-size: 15px;
+            font-weight: 700;
+        }
+        .stat-item .number.warning { color: #fbbf24; }
+        .stat-item .number.green { color: #4ade80; }
+        .stat-item .label {
+            font-size: 10px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-top: 2px;
+        }
+
+        /* Actions */
+        .actions-container {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .btn-edit {
+            background: rgba(59, 130, 246, 0.12);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            border-radius: 30px;
+            padding: 8px 14px;
+            font-weight: 500;
+            font-size: 13px;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            flex: 1;
+        }
+        .btn-edit:active {
+            transform: scale(0.95);
+            background: rgba(59, 130, 246, 0.25);
+        }
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.15);
+            border-radius: 30px;
+            padding: 8px 14px;
+            font-weight: 500;
+            font-size: 13px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            flex: 1;
+        }
+        .btn-delete:active {
+            transform: scale(0.95);
+            background: rgba(239, 68, 68, 0.25);
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: #0f172a;
+            border-radius: 24px;
+            border: 1px dashed #334155;
+        }
+        .empty-state i {
+            font-size: 48px;
+            color: #64748b;
+            opacity: 0.3;
+            margin-bottom: 12px;
+        }
+        .empty-state h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #94a3b8;
+        }
+        .empty-state p {
+            font-size: 14px;
+            color: #64748b;
+        }
+
         .badge-count {
             background-color: rgba(34, 211, 238, 0.15);
             color: #22d3ee;
@@ -69,98 +189,246 @@
             font-size: 12px;
             font-weight: 500;
         }
+
+        /* Popup */
+        .popup-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(5, 10, 25, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
+        .popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .popup-card {
+            background: #0f172a;
+            border-radius: 28px;
+            max-width: 400px;
+            width: 100%;
+            padding: 28px 24px;
+            border: 1px solid rgba(34, 211, 238, 0.1);
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+        }
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .popup-header h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .popup-header h3 i { color: #ef4444; }
+        .popup-close {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+        .popup-body {
+            color: #94a3b8;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .popup-body .warning-text {
+            color: #f87171;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+        .popup-footer {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+        .btn-secondary-popup {
+            background: transparent;
+            border: 1px solid #334155;
+            border-radius: 40px;
+            padding: 10px 24px;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .btn-danger-popup {
+            background: #ef4444;
+            border: none;
+            border-radius: 40px;
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+        }
     </style>
 </head>
-<body class="bg-dark" style="background-color: #1e293b !important;">
-
-    <!-- Conteneur principal mobile-first -->
+<body>
     <div class="container-fluid px-0" style="max-width: 500px; margin: 0 auto; background-color: #1e293b; min-height: 100vh;">
         
-        <!-- Header -->
-        <div class="header-page px-4 py-4">
+        <div class="header-page">
             <div class="d-flex align-items-center justify-content-between">
                 <a href="{{ url_for('index') }}" class="btn-back">
                     <i class="fas fa-arrow-left"></i> Retour
                 </a>
                 <div class="badge-count">
-                    <i class="fas fa-users me-1"></i> {{ liste|length }} client(s)
+                    <i class="fas fa-users me-1"></i> {{ clients|length }} client(s)
                 </div>
             </div>
         </div>
 
         <div class="px-4 py-3">
             
-            <!-- Titre de la page -->
             <div class="d-flex align-items-center gap-3 mb-4">
-                <div class="client-avatar">
+                <div class="rounded-circle p-3" style="background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(34, 211, 238, 0.05) 100%);">
                     <i class="fas fa-users text-info fs-3"></i>
                 </div>
                 <div>
-                    <h1 class="text-white fw-bold mb-0" style="font-size: 24px;">Mes Clients</h1>
+                    <h1 class="text-white fw-bold mb-0" style="font-size: 24px;">Clients</h1>
                     <p class="text-secondary small mb-0">Liste des clients enregistrés</p>
                 </div>
             </div>
 
-            <!-- Vérification si la liste est vide -->
-            {% if liste|length == 0 %}
+            {% if clients|length == 0 %}
             <div class="empty-state">
-                <i class="fas fa-user-slash text-secondary fs-1 mb-3 d-block"></i>
-                <h5 class="text-secondary mb-2">Aucun client</h5>
-                <p class="text-secondary small">Ajoutez votre premier client depuis l'accueil</p>
+                <i class="fas fa-users"></i>
+                <h3>Aucun client</h3>
+                <p>Ajoutez un client depuis l'accueil</p>
                 <a href="{{ url_for('ajouter') }}" class="btn-back mt-3">
-                    <i class="fas fa-user-plus"></i> Ajouter un client
+                    <i class="fas fa-user-plus"></i> Nouveau client
                 </a>
             </div>
             {% else %}
-            
-            <!-- Liste des clients (cards) -->
+
             <div class="d-flex flex-column gap-3">
-                {% for i in liste %}
-                <div class="client-card p-3 d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="client-avatar">
-                            <i class="fas fa-user-circle text-info fs-3"></i>
-                        </div>
-                        <div>
-                            <h5 class="text-white fw-semibold mb-1">{{ i.nom }}</h5>
-                            <div class="d-flex align-items-center gap-2">
-                                <i class="fas fa-phone-alt text-secondary small"></i>
-                                <span class="text-secondary small">{{ i.tel }}</span>
-                            </div>
+                {% for client in clients %}
+                <div class="client-card">
+                    
+                    <div class="client-info">
+                        <div class="avatar"><i class="fas fa-user"></i></div>
+                        <div style="flex: 1;">
+                            <span class="name">{{ client.nom }}</span>
+                            <span class="tel">
+                                <i class="fas fa-phone-alt"></i> 
+                                {{ client.tel or 'Non renseigné' }}
+                            </span>
                         </div>
                     </div>
-                    <!-- Badge statut client (peut être personnalisé plus tard) -->
-                    <div class="bg-info bg-opacity-10 rounded-pill px-3 py-1">
-                        <i class="fas fa-store text-info small"></i>
+
+                    <!-- Statistiques : Dettes actives / Monnaie à rendre -->
+                    <div class="client-stats">
+                        <div class="stat-item">
+                            <div class="number warning">{{ client.total_dettes|default(0) }} UM</div>
+                            <div class="label">Dettes actives</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="number green">{{ client.total_avoir|default(0) }} UM</div>
+                            <div class="label">Monnaie à rendre</div>
+                        </div>
                     </div>
+
+                    <div class="actions-container">
+                        <a href="{{ url_for('modifier_client', id_client=client.id_client) }}" class="btn-edit">
+                            <i class="fas fa-edit"></i> Modifier
+                        </a>
+                        <button class="btn-delete" onclick="openDeletePopup('{{ client.nom }}', '{{ client.id_client }}')">
+                            <i class="fas fa-trash"></i> Supprimer
+                        </button>
+                    </div>
+
                 </div>
                 {% endfor %}
             </div>
-            
-            {% endif %}
 
-            <!-- Petit message informatif -->
-            <div class="text-center mt-4 pt-3">
-                <small class="text-secondary">
-                    <i class="fas fa-chart-line me-1 text-info"></i> 
-                    {{ liste|length }} client(s) actif(s)
-                </small>
-            </div>
+            {% endif %}
 
         </div>
 
-        <!-- Footer -->
         <div class="text-center text-secondary small py-4 mt-3 border-top border-secondary" style="border-color: rgba(51, 65, 85, 0.5) !important;">
             <i class="fas fa-lock me-1"></i> Paiements sécurisés 
             <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i> 
-            AppDette
-            <i class="fas fa-circle mx-1" style="font-size: 4px; vertical-align: middle;"></i> 
-            
+            AppDette v2.0
         </div>
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- Popup suppression -->
+    <div id="deletePopup" class="popup-overlay">
+        <div class="popup-card">
+            <div class="popup-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> Supprimer le client</h3>
+                <button class="popup-close" onclick="closeDeletePopup()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="popup-body">
+                <p id="deleteMessage">Voulez-vous vraiment supprimer ce client ?</p>
+                <p class="warning-text">
+                    <i class="fas fa-exclamation-triangle"></i> Cette action est irréversible.
+                </p>
+            </div>
+            <div class="popup-footer">
+                <button class="btn-secondary-popup" onclick="closeDeletePopup()">Annuler</button>
+                <button class="btn-danger-popup" id="confirmDeleteBtn">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let deleteClientId = null;
+
+        function openDeletePopup(clientName, clientId) {
+            deleteClientId = clientId;
+            const overlay = document.getElementById('deletePopup');
+            const message = document.getElementById('deleteMessage');
+            message.textContent = `Voulez-vous vraiment supprimer le client "${clientName}" ?`;
+            overlay.classList.add('active');
+        }
+
+        function closeDeletePopup() {
+            document.getElementById('deletePopup').classList.remove('active');
+            deleteClientId = null;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const confirmBtn = document.getElementById('confirmDeleteBtn');
+            if (confirmBtn) {
+                confirmBtn.addEventListener('click', function() {
+                    if (deleteClientId) {
+                        window.location.href = '/supprimer_client/' + deleteClientId;
+                    }
+                });
+            }
+
+            const overlay = document.getElementById('deletePopup');
+            if (overlay) {
+                overlay.addEventListener('click', function(e) {
+                    if (e.target === this) closeDeletePopup();
+                });
+            }
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeDeletePopup();
+            });
+        });
+    </script>
+
 </body>
 </html>

@@ -1,0 +1,82 @@
+/* ============================================
+   PAGE FORMULAIRES
+   ============================================ */
+
+.form-page .form-card {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.form-page .form-card .icon-circle {
+    width: 64px;
+    height: 64px;
+    background: var(--accent-glow);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+    font-size: 28px;
+    color: var(--accent);
+}
+
+.form-page .form-card h2 {
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.form-page .form-card .subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+}
+
+/* Info message dans formulaire */
+.form-info {
+    background: var(--accent-glow);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-align: center;
+    margin-top: 16px;
+    border: 1px solid rgba(34, 211, 238, 0.06);
+}
+
+.form-info i {
+    color: var(--accent);
+    margin-right: 6px;
+}
+
+/* Montant disponible (pour utiliser_avoir) */
+.amount-display {
+    text-align: center;
+    padding: 16px;
+    background: linear-gradient(135deg, rgba(34, 211, 238, 0.08) 0%, rgba(34, 211, 238, 0.02) 100%);
+    border-radius: var(--radius-sm);
+    margin-bottom: 20px;
+}
+
+.amount-display .label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.amount-display .value {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.amount-display .value.warning {
+    color: var(--warning);
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+    .form-page .form-card {
+        padding: 20px 16px;
+    }
+}

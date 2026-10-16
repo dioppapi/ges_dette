@@ -1,0 +1,201 @@
+/* ============================================
+   CARTES
+   ============================================ */
+
+/* Carte de base */
+.card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    transition: var(--transition);
+}
+
+.card:active {
+    transform: scale(0.98);
+}
+
+/* Carte menu (accueil) */
+.menu-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 18px 14px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.menu-card:active {
+    transform: scale(0.96);
+    background: var(--bg-hover);
+}
+
+.menu-card .icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    font-size: 20px;
+}
+
+.menu-card .icon.cyan { background: var(--accent-glow); color: var(--accent); }
+.menu-card .icon.green { background: var(--success-glow); color: var(--success); }
+.menu-card .icon.yellow { background: var(--warning-glow); color: var(--warning); }
+.menu-card .icon.red { background: var(--danger-glow); color: var(--danger); }
+
+.menu-card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.menu-card p {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+/* Carte de liste (items) */
+.item-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    transition: var(--transition);
+}
+
+.item-card:active {
+    transform: scale(0.98);
+}
+
+.item-card .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 0;
+    border: none;
+}
+
+.item-card .user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.item-card .user i {
+    font-size: 22px;
+    color: var(--accent);
+}
+
+.item-card .user .name {
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.item-card .desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.item-card .desc i {
+    font-size: 12px;
+}
+
+.item-card .footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    margin-bottom: 10px;
+}
+
+.item-card .footer .label {
+    font-size: 10px;
+    color: var(--text-muted);
+    display: block;
+}
+
+.item-card .footer .amount {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.item-card .footer .rest {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--warning);
+}
+
+.item-card .footer .date {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.item-card .actions {
+    display: flex;
+    gap: 8px;
+}
+
+.item-card .actions button,
+.item-card .actions a {
+    flex: 1;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+/* Carte de formulaire */
+.form-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    border: 1px solid rgba(34, 211, 238, 0.06);
+    box-shadow: var(--shadow);
+}
+
+.form-card .icon-circle {
+    width: 64px;
+    height: 64px;
+    background: var(--accent-glow);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 28px;
+    color: var(--accent);
+}
+
+.form-card h2 {
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--text-primary);
+}
+
+.form-card .subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+}
